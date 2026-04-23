@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>【ワイヤーフレーム】よくある質問 - BNI岐阜 真チャプター</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; font-size: 14px; color: #333; background: #f0f0f0; }
+
+    /* ワイヤーフレーム共通スタイル */
+    .wf-block {
+      background: #fff;
+      border: 2px solid #aaa;
+      padding: 16px;
+      margin: 0;
+    }
+    .wf-label {
+      font-size: 11px;
+      font-weight: bold;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    .wf-content {
+      font-size: 13px;
+      color: #555;
+    }
+    .wf-annotation {
+      font-size: 11px;
+      color: #e06000;
+      margin-top: 6px;
+      border-left: 3px solid #e06000;
+      padding-left: 8px;
+    }
+    .wf-placeholder {
+      background: #ddd;
+      border: 1px dashed #999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #888;
+      font-size: 12px;
+    }
+
+    /* ページ全体 */
+    .page-wrapper {
+      max-width: 1080px;
+      margin: 30px auto;
+      background: #fff;
+      border: 3px solid #333;
+    }
+
+    /* ページタイトル（ワイヤー外の説明） */
+    .page-meta {
+      background: #333;
+      color: #fff;
+      padding: 12px 20px;
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .page-meta strong { font-size: 16px; }
+
+    /* === セクション別スタイル === */
+
+    /* 1. 上部赤帯 */
+    .top-bar {
+      background: #c00;
+      color: #fff;
+      padding: 6px 20px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 20px;
+      font-size: 12px;
+      border-bottom: 1px solid #900;
+    }
+    .top-bar span { cursor: pointer; text-decoration: underline; }
+
+    /* 2. ヘッダー */
+    .header {
+      padding: 16px 30px;
+      border-bottom: 1px solid #ccc;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-logo {
+      width: 160px;
+      height: 50px;
+      background: #ddd;
+      border: 1px dashed #999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: #888;
+    }
+    .header-nav {
+      display: flex;
+      gap: 24px;
+      font-size: 13px;
+    }
+    .header-nav span {
+      border-bottom: 1px solid #aaa;
+      cursor: pointer;
+    }
+    .header-nav span.current {
+      color: #c00;
+      border-bottom: 2px solid #c00;
+      font-weight: bold;
+    }
+
+    /* 下層ページ用：簡易ヒーロー */
+    .page-hero {
+      position: relative;
+      height: 180px;
+      background: #bbb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .page-hero-label {
+      font-size: 11px;
+      color: #666;
+      position: absolute;
+      top: 10px;
+      left: 14px;
+    }
+    .page-hero-title {
+      font-size: 26px;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 1px 1px 4px #333;
+      text-align: center;
+    }
+    .page-hero-sub {
+      font-size: 13px;
+      color: #fff;
+      text-shadow: 1px 1px 3px #333;
+      text-align: center;
+    }
+    .hero-note {
+      position: absolute;
+      bottom: 10px;
+      right: 14px;
+      font-size: 11px;
+      color: #e06000;
+      background: rgba(255,255,255,0.85);
+      padding: 4px 8px;
+    }
+    .breadcrumb {
+      background: #fafafa;
+      border-bottom: 1px solid #eee;
+      padding: 8px 60px;
+      font-size: 12px;
+      color: #777;
+    }
+
+    /* 共通セクション */
+    .section {
+      padding: 48px 60px;
+      border-top: 1px solid #ddd;
+    }
+    .section-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+    .section-title-line {
+      width: 40px;
+      height: 3px;
+      background: #c00;
+      margin-bottom: 20px;
+    }
+
+    /* FAQ カテゴリナビ */
+    .faq-cat-nav {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+    .faq-cat-nav a {
+      border: 1px solid #ccc;
+      padding: 8px 16px;
+      font-size: 13px;
+      color: #555;
+      text-decoration: none;
+      background: #fff;
+    }
+    .faq-cat-nav a:hover { border-color: #c00; color: #c00; }
+
+    /* FAQ カテゴリ */
+    .faq-category {
+      margin-bottom: 40px;
+    }
+    .faq-cat-title {
+      font-size: 16px;
+      font-weight: bold;
+      color: #c00;
+      border-left: 4px solid #c00;
+      padding-left: 10px;
+      margin-bottom: 16px;
+    }
+
+    /* FAQ アコーディオン（details/summary 最小実装） */
+    .faq-item {
+      border: 1px solid #ccc;
+      border-bottom: none;
+      background: #fff;
+    }
+    .faq-item:last-child {
+      border-bottom: 1px solid #ccc;
+    }
+    .faq-item summary {
+      list-style: none;
+      padding: 16px 20px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 14px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      position: relative;
+      background: #fafafa;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after {
+      content: "＋";
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #c00;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .faq-item[open] summary::after { content: "−"; }
+    .faq-q-mark {
+      color: #c00;
+      font-weight: bold;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .faq-q-text { flex: 1; padding-right: 30px; line-height: 1.5; }
+    .faq-answer {
+      padding: 16px 20px 20px 44px;
+      font-size: 13px;
+      color: #555;
+      line-height: 1.8;
+      background: #fff;
+      border-top: 1px solid #eee;
+    }
+    .faq-a-mark {
+      color: #888;
+      font-weight: bold;
+      font-size: 14px;
+      display: inline-block;
+      margin-right: 8px;
+    }
+
+    /* CTA帯 */
+    .cta-band {
+      background: #222;
+      color: #fff;
+      padding: 48px 60px;
+      text-align: center;
+    }
+    .cta-band h2 { font-size: 22px; margin-bottom: 10px; }
+    .cta-band p { font-size: 13px; color: #ccc; margin-bottom: 24px; }
+    .cta-band button {
+      background: #c00;
+      color: #fff;
+      border: none;
+      padding: 14px 48px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* フッター */
+    .footer {
+      background: #444;
+      color: #ccc;
+      padding: 32px 60px;
+    }
+    .footer-nav {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 20px;
+      font-size: 13px;
+    }
+    .footer-nav span { text-decoration: underline; cursor: pointer; }
+    .footer-copy {
+      font-size: 11px;
+      color: #999;
+      border-top: 1px solid #666;
+      padding-top: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<div style="max-width:1080px; margin: 20px auto; font-size:12px; color:#555; padding: 0 10px;">
+  ⚠️ これはワイヤーフレームです。色・フォント・画像はすべて仮です。レイアウトと要素の配置のみを確認してください。
+</div>
+
+<div class="page-wrapper">
+
+  <!-- ページ情報バー -->
+  <div class="page-meta">
+    <div>
+      <div style="font-size:11px; opacity:0.7;">BNI岐阜 真チャプター サイトリニューアル</div>
+      <strong>ページ⑤：よくある質問（FAQ）</strong>
+    </div>
+    <div style="font-size:11px; opacity:0.7;">作成：金子浩也　/ 対象：水戸唯人さん（コーディング担当）</div>
+  </div>
+
+  <!-- 1. 上部赤帯 -->
+  <div class="top-bar">
+    <span>BNI International</span>
+    <span>メンバーログイン</span>
+  </div>
+  <div style="padding: 4px 60px; background:#fff; border-bottom:1px solid #eee;">
+    <span style="font-size:10px; color:#e06000;">▲ 注釈：全ページ共通の赤帯。</span>
+  </div>
+
+  <!-- 2. ヘッダー -->
+  <div class="header">
+    <div class="header-logo">BNIロゴ + 真チャプター名<br>（ロゴ画像差し替え）</div>
+    <nav class="header-nav">
+      <span>BNIとは</span>
+      <span>参加のメリット</span>
+      <span>メンバー紹介</span>
+      <span>例会について</span>
+      <span class="current">よくある質問</span>
+      <span>お問い合わせ</span>
+    </nav>
+  </div>
+  <div style="padding: 4px 60px; background:#fff; border-bottom:1px solid #eee;">
+    <span style="font-size:10px; color:#e06000;">▲ 注釈：現在位置（よくある質問）をアクティブ表示。スマホではハンバーガーメニュー。</span>
+  </div>
+
+  <!-- 3. ページタイトルエリア -->
+  <div class="page-hero">
+    <div class="page-hero-label">SECTION 03 ／ ページタイトルエリア</div>
+    <div class="page-hero-title">よくある質問</div>
+    <div class="page-hero-sub">BNI岐阜 真チャプターへのお問い合わせで多いご質問</div>
+    <div class="hero-note">▲ 注釈：背景は全幅画像 or 単色（グレー系推奨）。下層ページ共通の高さ。</div>
+  </div>
+
+  <!-- パンくず -->
+  <div class="breadcrumb">
+    <span>ホーム</span> ＞ <span style="color:#c00;">よくある質問</span>
+  </div>
+  <div style="padding: 2px 60px 4px; background:#fff; border-bottom:1px solid #eee;">
+    <span style="font-size:10px; color:#e06000;">▲ 注釈：パンくずは全下層ページ共通。</span>
+  </div>
+
+  <!-- 4. カテゴリナビ -->
+  <div class="section">
+    <div class="section-title">カテゴリから探す</div>
+    <div class="section-title-line"></div>
+    <div class="faq-cat-nav">
+      <a href="#cat-entry">入会について</a>
+      <a href="#cat-meeting">例会について</a>
+      <a href="#cat-cost">費用について</a>
+      <a href="#cat-other">その他</a>
+    </div>
+    <div class="wf-annotation">
+      注釈：カテゴリをクリックすると該当セクションへアンカーリンクで移動。スマホでは横並び→折り返し。カテゴリはクライアント確認後に増減の可能性あり。
+    </div>
+  </div>
+
+  <!-- 5. 入会について -->
+  <div class="section" style="background:#f9f9f9;" id="cat-entry">
+    <div class="faq-category">
+      <div class="faq-cat-title">入会について</div>
+
+      <details class="faq-item">
+        <summary>
+          <span class="faq-q-mark">Q.</span>
+          <span class="faq-q-text">誰でも入会できますか？</span>
+        </summary>
+        <div class="faq-answer">
+          <span class="faq-a-mark">A.</span>
+          経営者・個人事業主・会社の代表決定権を持つ方が対象です。また、チャプターには1業種1名という制限があるため、同業種の方がすでに在籍している場合はご入会いただけません。まずは見学にお越しいただき、チャプターの雰囲気を体感してください。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>
+          <span class="faq-q-mark">Q.</span>
+          <span class="faq-q-text">入会までの流れを教えてください</span>
+        </summary>
+        <div class="faq-answer">
+          <span class="faq-a-mark">A.</span>
+          ① お問い合わせフォームから見学お申込み → ② 例会見学（無料） → ③ 入会申請書の提出 → ④ 会員委員会による審査 → ⑤ 承認後に入会、という流れになります。所要期間はおおむね2〜4週間程度です。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>
+          <span class="faq-q-mark">Q.</span>
+          <span class="faq-q-text">1業種1名という制限は本当ですか？</span>
+        </summary>
+        <div class="faq-answer">
+          <span class="faq-a-mark">A.</span>
+          はい、本当です。BNIの根幹となるルールで、メンバー同士が顧客を奪い合うことなく安心してビジネスを紹介し合える環境を守るために設けられています。同業種がすでに在籍している場合でも、業種カテゴリが細分化されていることもありますので、まずはお気軽にお問い合わせください。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>
+          <span class="faq-q-mark">Q.</span>
+          <span class="faq-q-text">見学はできますか？</span>
+        </summary>
+        <div class="faq-answer">
+          <span class="faq-a-mark">A.</span>
+          もちろん可能です。見学は無料で、入会を強制するものではありません。実際の例会の雰囲気を体験していただけます。お問い合わせフォームよりご希望日をお知らせください。
+        </div>
+      </details>
+    </div>
+    <div class="wf-annotation">
+      注釈：回答はすべて仮テキスト。<strong>クライアント確認・修正必須</strong>。特に審査プロセス・所要期間はチャプター独自ルールがあるため要確認。
+    </div>
+  </div>
+
+  <!-- 6. 例会について -->
+  <div class="section" id="cat-meeting">
+    <div class="faq-category">
+      <div class="faq-cat-title">例会について</div>
+
+      <details class="faq-item">
+        <summary>
+          <span class="faq-q-mark">Q.</span>
+          <span class="faq-q-text">毎週必ず参加しないといけませんか？</span>
+        </summary>
+        <div class="faq-answer">
+          <span class="faq-a-mark">A.</span>
+          BNIは出席を重視しています。例会への継続的な参加が信頼関係とリファーラルの質に直結するためです。ただし、やむを得ない欠席の場合は代理出席（サブスティテュート）制度を活用できます。詳細は例会ページをご覧ください。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>
+          <span class="faq-q-mark">Q.</span>
+          <span class="faq-q-text">例会ではどんなことをしますか？</span>
+        </summary>
+        <div class="faq-answer">
+          <span class="faq-a-mark">A.</span>
+          開会 → ビジネスプレゼン（60秒プレゼン）→ 教育の時間 → 10分プレゼン → リファーラル・感謝の発表 → 閉会、という流れで進みます。所要時間は約90分です。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>
+          <span class="faq-q-mark">Q.</span>
+          <span class="faq-q-text">オンライン参加はできますか？</span>
+        </summary>
+        <div class="faq-answer">
+          <span class="faq-a-mark">A.</span>
+          チャプターの方針により、ハイブリッド開催（対面＋オンライン）に対応している場合があります。真チャプターの現在の運用についてはお問い合わせください。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>
+          <span class="faq-q-mark">Q.</span>
+          <span class="faq-q-text">遅刻・早退はOKですか？</span>
+        </summary>
+        <div class="faq-answer">
+          <span class="faq-a-mark">A.</span>
+          時間厳守が原則です。遅刻・早退は欠席扱いになる場合があります。例会の構成上、途中参加・退出がメンバー全体の集中を妨げてしまうためです。
+        </div>
+      </details>
+    </div>
+    <div class="wf-annotation">
+      注釈：例会の流れ・所要時間・オンライン対応の可否はチャプターごとに運用が異なる。<strong>クライアント（真チャプター）の実際の運用に合わせて書き換え必須</strong>。
+    </div>
+  </div>
+
+  <!-- 7. 費用について -->
+  <div class="section" style="background:#f9f9f9;" id="cat-cost">
+    <div class="faq-category">
+      <div class="faq-cat-title">費用について</div>
+
+      <details class="faq-item">
+        <summary>
+          <span class="faq-q-mark">Q.</span>
+          <span class="faq-q-text">入会金・年会費はいくらですか？</span>
+        </summary>
+        <div class="faq-answer">
+          <span class="faq-a-mark">A.</span>
+          入会金：〇〇,〇〇〇円／年会費：〇〇,〇〇〇円（いずれも税別）です。別途、例会時の会場費・飲食費が必要です。詳細はお問い合わせください。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>
+          <span class="faq-q-mark">Q.</span>
+          <span class="faq-q-text">その他にかかる費用はありますか？</span>
+        </summary>
+        <div class="faq-answer">
+          <span class="faq-a-mark">A.</span>
+          例会ごとの会場費・飲食費（1回あたり〇〇〇〇円程度）が別途必要です。また、BNIトレーニング（任意）への参加費が発生する場合があります。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>
+          <span class="faq-q-mark">Q.</span>
+          <span class="faq-q-text">見学は無料ですか？</span>
+        </summary>
+        <div class="faq-answer">
+          <span class="faq-a-mark">A.</span>
+          見学自体は無料ですが、例会の性質上、会場費・飲食費（実費）のみご負担いただく場合があります。詳細は見学お申込み時にご案内します。
+        </div>
+      </details>
+    </div>
+    <div class="wf-annotation">
+      注釈：費用は仮の数値。<strong>クライアント確認・正確な金額の明記必須</strong>。税込・税別の表記も確認。見学時の実費負担の有無もチャプター方針による。
+    </div>
+  </div>
+
+  <!-- 8. その他 -->
+  <div class="section" id="cat-other">
+    <div class="faq-category">
+      <div class="faq-cat-title">その他</div>
+
+      <details class="faq-item">
+        <summary>
+          <span class="faq-q-mark">Q.</span>
+          <span class="faq-q-text">リファーラルとは何ですか？</span>
+        </summary>
+        <div class="faq-answer">
+          <span class="faq-a-mark">A.</span>
+          リファーラルとは「質の高いビジネス紹介」を意味します。単なる名刺交換や見込み客リストではなく、紹介者が相手のニーズを把握したうえで行う、具体的で成約につながりやすい紹介のことです。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>
+          <span class="faq-q-mark">Q.</span>
+          <span class="faq-q-text">Givers Gain®とはどういう意味ですか？</span>
+        </summary>
+        <div class="faq-answer">
+          <span class="faq-a-mark">A.</span>
+          「与える者は与えられる」という意味で、BNIの根幹となる理念です。まず相手（メンバー）のビジネスに貢献することから信頼関係が生まれ、結果として自分のビジネスも成長していくという考え方です。
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>
+          <span class="faq-q-mark">Q.</span>
+          <span class="faq-q-text">BNIと他の異業種交流会の違いは？</span>
+        </summary>
+        <div class="faq-answer">
+          <span class="faq-a-mark">A.</span>
+          BNIは「1業種1名制」「毎週定例会」「リファーラルの数値計測」という仕組みを持つ、世界共通のシステムで運営されるビジネス・リファーラル組織です。名刺交換や情報交換が中心の一般的な交流会とは異なり、成果（リファーラル・紹介案件）を生み出すことを明確な目的としています。
+        </div>
+      </details>
+    </div>
+    <div class="wf-annotation">
+      注釈：用語解説・BNIの特徴など、一般的な内容。公式文言ベースで作成。クライアントの意向で追加質問が出る可能性あり。
+    </div>
+  </div>
+
+  <!-- 9. 解決しなかったら -->
+  <div class="section" style="background:#f9f9f9;">
+    <div class="section-title">解決しませんでしたか？</div>
+    <div class="section-title-line"></div>
+    <p style="line-height:1.8; color:#555; margin-bottom:16px;">
+      上記で解決しないご質問がございましたら、お気軽にお問い合わせください。
+      見学のお申し込みも承っております。
+    </p>
+    <div style="text-align:center; margin-top:20px;">
+      <span style="display:inline-block; border:2px solid #c00; color:#c00; padding:12px 32px; font-size:13px; font-weight:bold; cursor:pointer;">
+        お問い合わせフォームへ →
+      </span>
+    </div>
+    <div class="wf-annotation" style="margin-top:16px;">
+      注釈：FAQで解決しない方の導線として、お問い合わせページへの誘導を設置。ボタンは wireframe_contact.html へ遷移。
+    </div>
+  </div>
+
+  <!-- 10. CTA帯 -->
+  <div class="cta-band">
+    <h2>まずは見学からお気軽にどうぞ</h2>
+    <p>見学は無料です。ご興味のある方はお気軽にお問い合わせください。</p>
+    <button>見学・入会を申し込む</button>
+    <div style="font-size:10px; color:#e06000; margin-top:12px;">▲ 注釈：全ページ共通のCTA帯。</div>
+  </div>
+
+  <!-- 11. フッター -->
+  <div class="footer">
+    <div class="footer-nav">
+      <span>ホーム</span>
+      <span>BNIとは</span>
+      <span>参加のメリット</span>
+      <span>メンバー紹介</span>
+      <span>例会について</span>
+      <span>よくある質問</span>
+      <span>お問い合わせ</span>
+      <span>BNI International（外部リンク）</span>
+    </div>
+    <div class="footer-copy">© 2025 BNI岐阜 真チャプター. All Rights Reserved.</div>
+    <div style="font-size:10px; color:#e06000; margin-top:8px;">▲ 注釈：フッターは全ページ共通。</div>
+  </div>
+
+</div><!-- /page-wrapper -->
+
+<!-- 実装メモ（ワイヤーの外） -->
+<div style="max-width:1080px; margin: 20px auto 40px; padding: 16px; background:#fffbe6; border:1px solid #f0c000; font-size:12px; color:#7a5500; line-height:1.7;">
+  <strong>📝 水戸さんへの実装メモ（FAQページ）</strong>
+  <ul style="margin-top:8px; padding-left:20px;">
+    <li>アコーディオンは <code>&lt;details&gt;</code> / <code>&lt;summary&gt;</code> タグで最小実装。JSライブラリ不要。</li>
+    <li>カテゴリナビからの移動はアンカーリンク（<code>#cat-entry</code> など）。スクロール位置はヘッダー固定時に <code>scroll-margin-top</code> で調整。</li>
+    <li>WP実装：FAQをカスタム投稿タイプ「faq」で管理し、カテゴリはタクソノミーで分類すると編集性が高い。単純なページ編集でも可。</li>
+    <li>スマホ：カテゴリナビは折り返し。質問文は長くなるので改行に注意。</li>
+    <li>回答テキストはすべて仮。クライアント確認後に確定する。</li>
+  </ul>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>【ワイヤーフレーム】BNIとは・参加するメリット - BNI岐阜 真チャプター</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; font-size: 14px; color: #333; background: #f0f0f0; }
+
+    /* ワイヤーフレーム共通スタイル */
+    .wf-block {
+      background: #fff;
+      border: 2px solid #aaa;
+      padding: 16px;
+      margin: 0;
+    }
+    .wf-label {
+      font-size: 11px;
+      font-weight: bold;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    .wf-content {
+      font-size: 13px;
+      color: #555;
+    }
+    .wf-annotation {
+      font-size: 11px;
+      color: #e06000;
+      margin-top: 6px;
+      border-left: 3px solid #e06000;
+      padding-left: 8px;
+    }
+    .wf-placeholder {
+      background: #ddd;
+      border: 1px dashed #999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #888;
+      font-size: 12px;
+    }
+
+    /* ページ全体 */
+    .page-wrapper {
+      max-width: 1080px;
+      margin: 30px auto;
+      background: #fff;
+      border: 3px solid #333;
+    }
+
+    /* ページタイトル（ワイヤー外の説明） */
+    .page-meta {
+      background: #333;
+      color: #fff;
+      padding: 12px 20px;
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .page-meta strong { font-size: 16px; }
+
+    /* === セクション別スタイル === */
+
+    /* 1. 上部赤帯 */
+    .top-bar {
+      background: #c00;
+      color: #fff;
+      padding: 6px 20px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 20px;
+      font-size: 12px;
+      border-bottom: 1px solid #900;
+    }
+    .top-bar span { cursor: pointer; text-decoration: underline; }
+
+    /* 2. ヘッダー */
+    .header {
+      padding: 16px 30px;
+      border-bottom: 1px solid #ccc;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-logo {
+      width: 160px;
+      height: 50px;
+      background: #ddd;
+      border: 1px dashed #999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: #888;
+    }
+    .header-nav {
+      display: flex;
+      gap: 24px;
+      font-size: 13px;
+    }
+    .header-nav span {
+      border-bottom: 1px solid #aaa;
+      cursor: pointer;
+    }
+    .header-nav span.current {
+      color: #c00;
+      border-bottom: 2px solid #c00;
+      font-weight: bold;
+    }
+
+    /* 3. ヒーロー */
+    .hero {
+      position: relative;
+      height: 360px;
+      background: #bbb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .hero-label {
+      font-size: 11px;
+      color: #666;
+      position: absolute;
+      top: 10px;
+      left: 14px;
+    }
+    .hero-text {
+      font-size: 22px;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 1px 1px 4px #333;
+      text-align: center;
+    }
+    .hero-sub {
+      font-size: 14px;
+      color: #fff;
+      text-shadow: 1px 1px 3px #333;
+      text-align: center;
+    }
+    .hero-cta {
+      background: #c00;
+      color: #fff;
+      padding: 12px 32px;
+      font-size: 15px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+    .hero-note {
+      position: absolute;
+      bottom: 10px;
+      right: 14px;
+      font-size: 11px;
+      color: #e06000;
+      background: rgba(255,255,255,0.85);
+      padding: 4px 8px;
+    }
+
+    /* 下層ページ用：簡易ヒーロー */
+    .page-hero {
+      position: relative;
+      height: 180px;
+      background: #bbb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .page-hero-label {
+      font-size: 11px;
+      color: #666;
+      position: absolute;
+      top: 10px;
+      left: 14px;
+    }
+    .page-hero-title {
+      font-size: 26px;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 1px 1px 4px #333;
+      text-align: center;
+    }
+    .page-hero-sub {
+      font-size: 13px;
+      color: #fff;
+      text-shadow: 1px 1px 3px #333;
+      text-align: center;
+    }
+    .breadcrumb {
+      background: #fafafa;
+      border-bottom: 1px solid #eee;
+      padding: 8px 60px;
+      font-size: 12px;
+      color: #777;
+    }
+    .breadcrumb span { margin: 0 4px; }
+
+    /* 共通セクション */
+    .section {
+      padding: 48px 60px;
+      border-top: 1px solid #ddd;
+    }
+    .section-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+    .section-title-line {
+      width: 40px;
+      height: 3px;
+      background: #c00;
+      margin-bottom: 20px;
+    }
+
+    /* 4. BNIとは */
+    .about-text {
+      line-height: 1.8;
+      color: #555;
+      margin-bottom: 20px;
+      max-width: 700px;
+    }
+    .about-video {
+      width: 480px;
+      height: 270px;
+      background: #ccc;
+      border: 1px dashed #999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #888;
+      font-size: 12px;
+      text-align: center;
+      padding: 10px;
+      line-height: 1.6;
+    }
+
+    /* 5. 参加するメリット */
+    .merits-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 8px;
+    }
+    .merit-card {
+      border: 1px solid #ccc;
+      padding: 20px;
+      text-align: center;
+    }
+    .merit-icon {
+      width: 56px;
+      height: 56px;
+      background: #ddd;
+      border-radius: 50%;
+      margin: 0 auto 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: #888;
+    }
+    .merit-title { font-weight: bold; margin-bottom: 6px; font-size: 13px; }
+    .merit-desc { font-size: 12px; color: #666; line-height: 1.6; }
+
+    /* 数字で見るBNI */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 8px;
+    }
+    .stat-card {
+      border: 1px solid #ccc;
+      padding: 20px 12px;
+      text-align: center;
+      background: #fff;
+    }
+    .stat-number {
+      font-size: 28px;
+      font-weight: bold;
+      color: #c00;
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: #666;
+    }
+
+    /* 仕組み説明（チャプターの流れなど） */
+    .mechanism-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .mechanism-item {
+      border: 1px solid #ccc;
+      padding: 16px 20px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .mechanism-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #c00;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+    .mechanism-body h4 { font-size: 14px; margin-bottom: 4px; }
+    .mechanism-body p { font-size: 12px; color: #666; line-height: 1.7; }
+
+    /* 8. CTA帯 */
+    .cta-band {
+      background: #222;
+      color: #fff;
+      padding: 48px 60px;
+      text-align: center;
+    }
+    .cta-band h2 { font-size: 22px; margin-bottom: 10px; }
+    .cta-band p { font-size: 13px; color: #ccc; margin-bottom: 24px; }
+    .cta-band button {
+      background: #c00;
+      color: #fff;
+      border: none;
+      padding: 14px 48px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* 9. フッター */
+    .footer {
+      background: #444;
+      color: #ccc;
+      padding: 32px 60px;
+    }
+    .footer-nav {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 20px;
+      font-size: 13px;
+    }
+    .footer-nav span { text-decoration: underline; cursor: pointer; }
+    .footer-copy {
+      font-size: 11px;
+      color: #999;
+      border-top: 1px solid #666;
+      padding-top: 12px;
+    }
+
+    /* アノテーション付きセクションラッパー */
+    .annotated {
+      position: relative;
+    }
+    .side-note {
+      position: absolute;
+      right: -220px;
+      top: 0;
+      width: 200px;
+      background: #fffbe6;
+      border: 1px solid #f0c000;
+      padding: 8px;
+      font-size: 11px;
+      color: #7a5500;
+      line-height: 1.6;
+    }
+    .side-note::before {
+      content: "📝 注釈";
+      display: block;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<div style="max-width:1080px; margin: 20px auto; font-size:12px; color:#555; padding: 0 10px;">
+  ⚠️ これはワイヤーフレームです。色・フォント・画像はすべて仮です。レイアウトと要素の配置のみを確認してください。
+</div>
+
+<div class="page-wrapper">
+
+  <!-- ページ情報バー -->
+  <div class="page-meta">
+    <div>
+      <div style="font-size:11px; opacity:0.7;">BNI岐阜 真チャプター サイトリニューアル</div>
+      <strong>ページ②：BNIとは・参加するメリット（About）</strong>
+    </div>
+    <div style="font-size:11px; opacity:0.7;">作成：金子浩也　/ 対象：水戸唯人さん（コーディング担当）</div>
+  </div>
+
+  <!-- 1. 上部赤帯 -->
+  <div class="top-bar">
+    <span>BNI International</span>
+    <span>メンバーログイン</span>
+  </div>
+  <div style="padding: 4px 60px; background:#fff; border-bottom:1px solid #eee;">
+    <span style="font-size:10px; color:#e06000;">▲ 注釈：トップと同じ赤帯。全ページ共通要素。</span>
+  </div>
+
+  <!-- 2. ヘッダー -->
+  <div class="header">
+    <div class="header-logo">BNIロゴ + 真チャプター名<br>（ロゴ画像差し替え）</div>
+    <nav class="header-nav">
+      <span class="current">BNIとは</span>
+      <span>参加のメリット</span>
+      <span>メンバー紹介</span>
+      <span>例会について</span>
+      <span>よくある質問</span>
+      <span>お問い合わせ</span>
+    </nav>
+  </div>
+  <div style="padding: 4px 60px; background:#fff; border-bottom:1px solid #eee;">
+    <span style="font-size:10px; color:#e06000;">▲ 注釈：現在位置（BNIとは）は赤でアクティブ表示。スマホではハンバーガーメニューに変更。</span>
+  </div>
+
+  <!-- 3. ページタイトルエリア（簡易ヒーロー） -->
+  <div class="page-hero">
+    <div class="page-hero-label">SECTION 03 ／ ページタイトルエリア</div>
+    <div class="page-hero-title">BNIとは ― Local Business, Global Network®</div>
+    <div class="page-hero-sub">世界最大級のビジネス・リファーラル組織</div>
+    <div class="hero-note">▲ 注釈：背景は全幅画像（BNIイメージ or チャプター写真）。トップのヒーローより低めの高さ。</div>
+  </div>
+
+  <!-- パンくず -->
+  <div class="breadcrumb">
+    <span>ホーム</span> ＞ <span style="color:#c00;">BNIとは・参加するメリット</span>
+  </div>
+  <div style="padding: 2px 60px 4px; background:#fff; border-bottom:1px solid #eee;">
+    <span style="font-size:10px; color:#e06000;">▲ 注釈：パンくずは全下層ページに設置。SEO・UX両面で推奨。</span>
+  </div>
+
+  <!-- 4. BNIの概要 -->
+  <div class="section">
+    <div class="section-title">BNIとは</div>
+    <div class="section-title-line"></div>
+    <p class="about-text">
+      BNI（Business Network International）は、1985年にアイヴァン・マイズナー博士により創設された、
+      世界最大級のビジネス・リファーラル組織です。
+      経営者や事業オーナーがお互いに質の高いビジネス紹介（リファーラル）を提供し合うための仕組みと環境を提供しています。
+      現在、世界約70か国で30万人以上のメンバーが活動しており、
+      BNI全体として年間1,400万件以上のリファーラルが生まれています。
+    </p>
+    <p class="about-text">
+      BNIの活動は、すべて「<strong>Givers Gain®（ギバーズゲイン）</strong>」という理念に基づいています。
+      「与える者は与えられる」──自分のビジネスを優先するのではなく、
+      まず仲間のビジネスに貢献することから信頼関係が生まれ、
+      その結果として自分のビジネスも成長していく、という考え方です。
+    </p>
+    <div class="wf-annotation" style="margin-top:12px;">
+      注釈：本文は元サイト・BNI公式・参考サイト（東京）と共通の公式文言を使用。固有数値（メンバー数・リファーラル件数）は最新値を公式サイトから引用。クライアント確認必要。
+    </div>
+  </div>
+
+  <!-- 5. BNI紹介動画 -->
+  <div class="section" style="background:#f9f9f9;">
+    <div class="section-title">BNI紹介動画</div>
+    <div class="section-title-line"></div>
+    <div style="display:flex; justify-content:center;">
+      <div class="about-video">
+        [ 動画エリア：BNI紹介動画 YouTube埋め込み ]<br>
+        ※16:9、幅480px程度<br>
+        動画URLはクライアントに確認
+      </div>
+    </div>
+    <div class="wf-annotation" style="margin-top:16px;">
+      注釈：【WP実装要件】YouTube iframeで埋め込み。動画URLはカスタムフィールドで管理できるようにすると差し替えが容易。トップページと同じ動画を流用。クライアント提供素材待ち。
+    </div>
+  </div>
+
+  <!-- 6. チャプターの仕組み -->
+  <div class="section">
+    <div class="section-title">チャプターの仕組み</div>
+    <div class="section-title-line"></div>
+    <p class="about-text">
+      BNIは「チャプター」と呼ばれる地域単位のグループで活動しています。
+      チャプターごとに週1回の例会（ミーティング）を開催し、
+      メンバー同士のつながりを深めながら、質の高いリファーラルを交換していきます。
+    </p>
+    <div class="mechanism-list">
+      <div class="mechanism-item">
+        <div class="mechanism-num">1</div>
+        <div class="mechanism-body">
+          <h4>1業種1名制</h4>
+          <p>各チャプターには、同じ業種のメンバーは1名のみ所属できます。これにより、メンバー同士で顧客を奪い合うことなく、安心してビジネスを紹介し合える環境が生まれます。</p>
+        </div>
+      </div>
+      <div class="mechanism-item">
+        <div class="mechanism-num">2</div>
+        <div class="mechanism-body">
+          <h4>週1回の例会</h4>
+          <p>毎週同じ曜日・時間に例会を開催。決まった流れ（アジェンダ）に沿って、ビジネスプレゼン・リファーラル交換・学びの時間を過ごします。</p>
+        </div>
+      </div>
+      <div class="mechanism-item">
+        <div class="mechanism-num">3</div>
+        <div class="mechanism-body">
+          <h4>リファーラル（紹介）の交換</h4>
+          <p>自分のネットワークの中でメンバーのビジネスに合う人を見つけ、紹介する。受け取るだけでなく、まず与えることが基本です。</p>
+        </div>
+      </div>
+      <div class="mechanism-item">
+        <div class="mechanism-num">4</div>
+        <div class="mechanism-body">
+          <h4>トレーニングと学びの機会</h4>
+          <p>ビジネスを成長させるための継続的なトレーニング制度があり、プレゼンスキル・リファーラル獲得スキルを磨けます。</p>
+        </div>
+      </div>
+    </div>
+    <div class="wf-annotation" style="margin-top:16px;">
+      注釈：チャプターの仕組みは初見の方に向けた解説。番号付きカードで「読み流しやすさ」を優先。公式文言ベース＋クライアント確認。
+    </div>
+  </div>
+
+  <!-- 7. 参加するメリット（詳細版・6カード） -->
+  <div class="section" style="background:#f9f9f9;">
+    <div class="section-title">参加するメリット</div>
+    <div class="section-title-line"></div>
+    <p class="about-text">BNI岐阜 真チャプターに参加することで得られる具体的なメリットをご紹介します。</p>
+    <div class="merits-grid">
+      <div class="merit-card">
+        <div class="merit-icon">アイコン</div>
+        <div class="merit-title">ビジネス紹介の増加</div>
+        <div class="merit-desc">信頼関係を築いたメンバーから、継続的に質の高いリファーラル（紹介）を得られます。</div>
+      </div>
+      <div class="merit-card">
+        <div class="merit-icon">アイコン</div>
+        <div class="merit-title">経営者ネットワーク</div>
+        <div class="merit-desc">多様な業種の経営者・事業主と、深い信頼関係を築くことができます。</div>
+      </div>
+      <div class="merit-card">
+        <div class="merit-icon">アイコン</div>
+        <div class="merit-title">スキル・プレゼン力向上</div>
+        <div class="merit-desc">毎週のプレゼン機会とトレーニングで、ビジネスパーソンとして継続的に成長できます。</div>
+      </div>
+      <div class="merit-card">
+        <div class="merit-icon">アイコン</div>
+        <div class="merit-title">定期的な学びの機会</div>
+        <div class="merit-desc">BNI独自の教育カリキュラムで、リファーラル獲得・ビジネス拡大のスキルを体系的に習得。</div>
+      </div>
+      <div class="merit-card">
+        <div class="merit-icon">アイコン</div>
+        <div class="merit-title">信頼関係の構築</div>
+        <div class="merit-desc">毎週顔を合わせることで生まれる深い信頼関係が、ビジネスを超えた財産になります。</div>
+      </div>
+      <div class="merit-card">
+        <div class="merit-icon">アイコン</div>
+        <div class="merit-title">ビジネスパートナーとの出会い</div>
+        <div class="merit-desc">単なる紹介だけでなく、共同プロジェクトや新規事業のパートナーとの出会いも生まれます。</div>
+      </div>
+    </div>
+    <div class="wf-annotation" style="margin-top:16px;">
+      注釈：メリット6カード。トップページ（3カード）の詳細版に相当。アイコンは Font Awesome を想定。スマホでは1カラム、タブレットで2カラム表示。テキストはクライアント確認・修正。
+    </div>
+  </div>
+
+  <!-- 8. 数字で見るBNI -->
+  <div class="section">
+    <div class="section-title">数字で見るBNI</div>
+    <div class="section-title-line"></div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number">約70</div>
+        <div class="stat-label">活動国・地域</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">30万人+</div>
+        <div class="stat-label">世界のメンバー数</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">1,400万件+</div>
+        <div class="stat-label">年間リファーラル件数</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">$26B+</div>
+        <div class="stat-label">年間ビジネス創出額</div>
+      </div>
+    </div>
+    <div class="wf-annotation" style="margin-top:16px;">
+      注釈：数値はすべて仮（BNI公式の最新値を引用予定）。<strong>クライアント確認要</strong>。BNI公式サイトの統計値を最新化してから掲載。
+    </div>
+  </div>
+
+  <!-- 9. CTA帯 -->
+  <div class="cta-band">
+    <h2>BNI岐阜 真チャプターの活動を見てみませんか？</h2>
+    <p>まずは例会の見学からお気軽にどうぞ。見学は無料です。</p>
+    <button>見学・入会を申し込む</button>
+    <div style="font-size:10px; color:#e06000; margin-top:12px;">▲ 注釈：全ページ共通のCTA帯。ボタンは wireframe_contact.html へ遷移。</div>
+  </div>
+
+  <!-- 10. フッター -->
+  <div class="footer">
+    <div class="footer-nav">
+      <span>ホーム</span>
+      <span>BNIとは</span>
+      <span>参加のメリット</span>
+      <span>メンバー紹介</span>
+      <span>例会について</span>
+      <span>よくある質問</span>
+      <span>お問い合わせ</span>
+      <span>BNI International（外部リンク）</span>
+    </div>
+    <div class="footer-copy">© 2025 BNI岐阜 真チャプター. All Rights Reserved.</div>
+    <div style="font-size:10px; color:#e06000; margin-top:8px;">▲ 注釈：フッターナビは全ページ共通。トップと完全一致。</div>
+  </div>
+
+</div><!-- /page-wrapper -->
+
+</body>
+</html>
