@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__a04bafb5-9a72-4fc4-8e62-9d40a8c5d14a__notion-fetch",
+      "WebFetch(domain:innocent-web.com)",
+      "WebFetch(domain:file.stock-app.jp)",
+      "mcp__a04bafb5-9a72-4fc4-8e62-9d40a8c5d14a__notion-create-pages",
+      "mcp__a04bafb5-9a72-4fc4-8e62-9d40a8c5d14a__notion-update-page",
+      "Bash(mkdir -p \"G:/マイドライブ/仕事/BNI岐阜チャプターサイト制作/backup_images\")",
+      "Bash(curl -s -O https://innocent-web.com/gifu_shin/images/main.jpg -O https://innocent-web.com/gifu_shin/images/itotomomi.jpg -O https://innocent-web.com/gifu_shin/images/iwata.jpg -O https://innocent-web.com/gifu_shin/images/shiromaru.jpg -O https://innocent-web.com/gifu_shin/images/karino.jpg -O https://innocent-web.com/gifu_shin/images/morita.jpg -O https://innocent-web.com/gifu_shin/images/asao.jpg -O https://innocent-web.com/gifu_shin/images/sakurai_bni.jpg -O https://innocent-web.com/gifu_shin/images/nakama_bni.jpg -O https://innocent-web.com/gifu_shin/images/miwa.jpg -O https://innocent-web.com/gifu_shin/images/itomikio.jpg -O https://innocent-web.com/gifu_shin/images/shimizu.jpg -O https://innocent-web.com/gifu_shin/images/usui.jpg -O https://innocent-web.com/gifu_shin/images/hayashi.jpg -O https://innocent-web.com/gifu_shin/images/suzukihiroshi.jpg -O https://innocent-web.com/gifu_shin/images/ando.jpg)",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "mcp__Claude_in_Chrome__navigate",
+      "mcp__Claude_in_Chrome__get_page_text",
+      "mcp__Claude_in_Chrome__read_page",
+      "mcp__Claude_in_Chrome__javascript_tool",
+      "mcp__Claude_in_Chrome__find",
+      "Bash(cp \"/c/Users/Hi/Downloads/BNI_logo_Red_RGB.png\" \"G:/マイドライブ/仕事/BNI岐阜チャプターサイト制作/backup_images/\")",
+      "Bash(cp \"/c/Users/Hi/Downloads/BNI_logo_White_RGB.png\" \"G:/マイドライブ/仕事/BNI岐阜チャプターサイト制作/backup_images/\")",
+      "Bash(cp \"/c/Users/Hi/Downloads/BNI_logo_Red_RGB.png\" \"G:/マイドライブ/仕事/BNI岐阜チャプターサイト制作/デザイナー向け_チラシ制作/BNIロゴ/\")",
+      "Bash(cp \"/c/Users/Hi/Downloads/BNI_logo_White_RGB.png\" \"G:/マイドライブ/仕事/BNI岐阜チャプターサイト制作/デザイナー向け_チラシ制作/BNIロゴ/\")"
+    ]
+  }
+}

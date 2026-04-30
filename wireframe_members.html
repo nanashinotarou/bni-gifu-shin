@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>【ワイヤーフレーム】メンバー紹介 - BNI岐阜 真チャプター</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; font-size: 14px; color: #333; background: #f0f0f0; }
+
+    /* ワイヤーフレーム共通スタイル（old/wireframe_top.html 準拠） */
+    .wf-block {
+      background: #fff;
+      border: 2px solid #aaa;
+      padding: 16px;
+      margin: 0;
+    }
+    .wf-label {
+      font-size: 11px;
+      font-weight: bold;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    .wf-content {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.7;
+    }
+    .wf-annotation {
+      font-size: 11px;
+      color: #e06000;
+      margin-top: 6px;
+      border-left: 3px solid #e06000;
+      padding-left: 8px;
+      line-height: 1.6;
+    }
+    .wf-placeholder {
+      background: #ddd;
+      border: 1px dashed #999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #888;
+      font-size: 12px;
+    }
+
+    /* ページ全体 */
+    .page-wrapper {
+      max-width: 1080px;
+      margin: 30px auto;
+      background: #fff;
+      border: 3px solid #333;
+    }
+
+    /* ページ情報バー（ワイヤー外の説明） */
+    .page-meta {
+      background: #333;
+      color: #fff;
+      padding: 12px 20px;
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .page-meta strong { font-size: 16px; }
+
+    /* ヘッダー（共通） */
+    .header {
+      padding: 18px 28px;
+      border-bottom: 1px solid #ccc;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    .header-left {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      min-width: 340px;
+    }
+    .header-logo {
+      width: 160px;
+      height: 50px;
+      background: #ddd;
+      border: 1px dashed #999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: #888;
+      flex-shrink: 0;
+    }
+    .header-title {
+      font-weight: bold;
+      font-size: 16px;
+      color: #333;
+      line-height: 1.2;
+    }
+    .header-nav {
+      display: flex;
+      gap: 18px;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    .header-nav a {
+      color: #333;
+      text-decoration: none;
+      border-bottom: 1px solid #aaa;
+      padding-bottom: 2px;
+    }
+    .header-nav a.current {
+      color: #c00;
+      border-bottom: 2px solid #c00;
+      font-weight: bold;
+    }
+
+    /* 見出しエリア（簡易） */
+    .page-hero {
+      padding: 26px 56px;
+      background: #f6f6f6;
+      border-bottom: 1px solid #ddd;
+    }
+    .page-hero h1 { font-size: 26px; margin-bottom: 6px; }
+    .page-hero p { font-size: 13px; color: #666; line-height: 1.6; }
+    .breadcrumb {
+      padding: 10px 56px;
+      font-size: 12px;
+      color: #777;
+      border-bottom: 1px solid #eee;
+      background: #fff;
+    }
+    .breadcrumb a { color: #333; text-decoration: underline; }
+
+    /* メンバーグリッド */
+    .section { padding: 40px 56px; }
+    .members-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 10px;
+    }
+    .member-card {
+      border: 1px solid #ccc;
+      padding: 16px;
+      background: #fff;
+      display: grid;
+      grid-template-columns: 86px 1fr;
+      gap: 14px;
+      align-items: center;
+      min-height: 110px;
+    }
+    .member-photo {
+      width: 86px;
+      height: 86px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #ddd;
+      border: 1px dashed #999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #888;
+      font-size: 12px;
+    }
+    .member-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .member-name { font-weight: bold; font-size: 15px; color: #333; }
+    .member-biz { font-size: 12px; color: #666; margin-top: 4px; line-height: 1.5; }
+    .member-comment { font-size: 11px; color: #999; margin-top: 4px; font-style: italic; line-height: 1.5; }
+
+    /* フッター */
+    .footer {
+      background: #444;
+      color: #ccc;
+      padding: 26px 56px;
+    }
+    .footer-nav {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+      font-size: 13px;
+    }
+    .footer-nav a { color: #ccc; text-decoration: underline; }
+    .footer-copy {
+      font-size: 11px;
+      color: #999;
+      border-top: 1px solid #666;
+      padding-top: 12px;
+    }
+
+    @media (max-width: 960px) {
+      .section, .page-hero, .breadcrumb, .footer { padding-left: 20px; padding-right: 20px; }
+      .members-grid { grid-template-columns: repeat(2, 1fr); }
+      .header { padding: 16px 20px; flex-wrap: wrap; }
+    }
+    @media (max-width: 560px) {
+      .members-grid { grid-template-columns: 1fr; }
+      .member-card { grid-template-columns: 72px 1fr; }
+      .member-photo { width: 72px; height: 72px; }
+    }
+  </style>
+</head>
+<body>
+
+<div style="max-width:1080px; margin: 20px auto; font-size:12px; color:#555; padding: 0 10px;">
+  ⚠️ これはワイヤーフレームです。色・フォント・画像はすべて仮です。レイアウトと要素の配置のみを確認してください。
+</div>
+
+<div class="page-wrapper">
+
+  <div class="page-meta">
+    <div>
+      <div style="font-size:11px; opacity:0.7;">BNI岐阜 真チャプター サイトリニューアル</div>
+      <strong>ページ②：メンバー紹介</strong>
+    </div>
+    <div style="font-size:11px; opacity:0.7;">対象：水戸唯人さん（コーディング担当）</div>
+  </div>
+
+  <!-- ヘッダー（wireframe_top.html と共通） -->
+  <div class="header">
+    <div class="header-left">
+      <div class="header-logo">BNIロゴ（仮）</div>
+      <div class="header-title">BNI 岐阜 真チャプター</div>
+    </div>
+    <nav class="header-nav">
+      <a href="./wireframe_top.html">トップ</a>
+      <a class="current" href="./wireframe_members.html">メンバー紹介</a>
+    </nav>
+  </div>
+  <div style="padding: 4px 56px; background:#fff; border-bottom:1px solid #eee;">
+    <span style="font-size:10px; color:#e06000;">▲ 注釈：ヘッダーはトップと共通。現在ページ（メンバー紹介）をアクティブ表示。</span>
+  </div>
+
+  <!-- 見出しエリア -->
+  <div class="page-hero">
+    <h1>メンバー紹介</h1>
+    <p>BNI 岐阜 真チャプターで活動するメンバーの一覧です。</p>
+  </div>
+
+  <!-- パンくず -->
+  <div class="breadcrumb">
+    <a href="./wireframe_top.html">トップ</a> <span>＞</span> <span style="color:#c00; font-weight:bold;">メンバー紹介</span>
+  </div>
+  <div style="padding: 2px 56px 8px; background:#fff; border-bottom:1px solid #eee;">
+    <span style="font-size:10px; color:#e06000;">▲ 注釈：パンくずは実装時に設置推奨（UX/SEO）。</span>
+  </div>
+
+  <!-- メンバーグリッド -->
+  <div class="section">
+    <div class="wf-label">Members grid (3 columns)</div>
+    <div class="members-grid">
+      <div class="member-card">
+        <div class="member-photo"><img src="./backup_images/iwata.jpg" alt="岩田 智子"></div>
+        <div>
+          <div class="member-name">岩田 智子</div>
+          <div class="member-biz">天国まで歩いていける健康学</div>
+          <div class="member-comment">（ひとことコメント）</div>
+        </div>
+      </div>
+      <div class="member-card">
+        <div class="member-photo"><img src="./backup_images/shiromaru.jpg" alt="四郎丸 輝"></div>
+        <div>
+          <div class="member-name">四郎丸 輝</div>
+          <div class="member-biz">節税アドバイザー</div>
+          <div class="member-comment">（ひとことコメント）</div>
+        </div>
+      </div>
+      <div class="member-card">
+        <div class="member-photo"><img src="./backup_images/itotomomi.jpg" alt="伊藤 友美"></div>
+        <div>
+          <div class="member-name">伊藤 友美</div>
+          <div class="member-biz">生命保険（福利厚生・年金見直し）<span style="color:#e06000;"> ⚠️変更予定</span></div>
+          <div class="member-comment">（ひとことコメント）</div>
+        </div>
+      </div>
+
+      <div class="member-card">
+        <div class="member-photo"><img src="./backup_images/karino.jpg" alt="狩野 健"></div>
+        <div>
+          <div class="member-name">狩野 健</div>
+          <div class="member-biz">現役整備士が提案する損害保険</div>
+          <div class="member-comment">（ひとことコメント）</div>
+        </div>
+      </div>
+      <div class="member-card">
+        <div class="member-photo"><img src="./backup_images/morita.jpg" alt="森田 明菜"></div>
+        <div>
+          <div class="member-name">森田 明菜</div>
+          <div class="member-biz">東洋医学専門家</div>
+          <div class="member-comment">（ひとことコメント）</div>
+        </div>
+      </div>
+      <div class="member-card">
+        <div class="member-photo"><img src="./backup_images/asao.jpg" alt="浅尾 竜也"></div>
+        <div>
+          <div class="member-name">浅尾 竜也</div>
+          <div class="member-biz">自動車売買</div>
+          <div class="member-comment">（ひとことコメント）</div>
+        </div>
+      </div>
+
+      <div class="member-card">
+        <div class="member-photo"><img src="./backup_images/sakurai_bni.jpg" alt="櫻井 ゆかり"></div>
+        <div>
+          <div class="member-name">櫻井 ゆかり</div>
+          <div class="member-biz">紹介予約制プライベートブティック</div>
+          <div class="member-comment">（ひとことコメント）</div>
+        </div>
+      </div>
+      <div class="member-card">
+        <div class="member-photo"><img src="./backup_images/miwa.jpg" alt="三輪 真理"></div>
+        <div>
+          <div class="member-name">三輪 真理</div>
+          <div class="member-biz">オンラインスパルタ英会話</div>
+          <div class="member-comment">（ひとことコメント）</div>
+        </div>
+      </div>
+      <div class="member-card">
+        <div class="member-photo"><img src="./backup_images/itomikio.jpg" alt="伊藤 幹朗"></div>
+        <div>
+          <div class="member-name">伊藤 幹朗</div>
+          <div class="member-biz">税理士</div>
+          <div class="member-comment">（ひとことコメント）</div>
+        </div>
+      </div>
+
+      <div class="member-card">
+        <div class="member-photo"><img src="./backup_images/shimizu.jpg" alt="清水 紀秀"></div>
+        <div>
+          <div class="member-name">清水 紀秀</div>
+          <div class="member-biz">農家専門EC運営</div>
+          <div class="member-comment">（ひとことコメント）</div>
+        </div>
+      </div>
+      <div class="member-card">
+        <div class="member-photo"><img src="./backup_images/usui.jpg" alt="臼井 常雄"></div>
+        <div>
+          <div class="member-name">臼井 常雄</div>
+          <div class="member-biz">建築営業支援・施工支援</div>
+          <div class="member-comment">（ひとことコメント）</div>
+        </div>
+      </div>
+      <div class="member-card">
+        <div class="member-photo"><img src="./backup_images/hayashi.jpg" alt="林 貞明"></div>
+        <div>
+          <div class="member-name">林 貞明</div>
+          <div class="member-biz">屋根工事</div>
+          <div class="member-comment">（ひとことコメント）</div>
+        </div>
+      </div>
+
+      <div class="member-card">
+        <div class="member-photo"><img src="./backup_images/suzukihiroshi.jpg" alt="鈴木 博"></div>
+        <div>
+          <div class="member-name">鈴木 博</div>
+          <div class="member-biz">建物リフォーム</div>
+          <div class="member-comment">（ひとことコメント）</div>
+        </div>
+      </div>
+      <div class="member-card">
+        <div class="member-photo"><img src="./backup_images/ando.jpg" alt="安藤 勇斗"></div>
+        <div>
+          <div class="member-name">安藤 勇斗</div>
+          <div class="member-biz">ハウスクリーニング</div>
+          <div class="member-comment">（ひとことコメント）</div>
+        </div>
+      </div>
+
+      <div class="member-card">
+        <div class="member-photo wf-placeholder">写真（未定）</div>
+        <div>
+          <div class="member-name">大久保 翔</div>
+          <div class="member-biz">（カテゴリー未定）</div>
+          <div class="member-comment">（ひとことコメント未定）</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wf-annotation" style="margin-top:16px;">
+      氏名・カテゴリーは <code>README.html</code> の写真ファイル名対応表を参照してください。写真は <code>backup_images/</code> フォルダを使用してください。<br>
+      伊藤友美さんのカテゴリーは変更予定です。確定次第お知らせします。<br>
+      大久保翔さんは写真・カテゴリー・ひとことが未確定のため、枠のみで構いません。確定次第お知らせします。<br>
+      WP実装はカスタム投稿タイプ <code>member</code> で管理。詳細は <code>wordpress_spec.html</code> を参照してください。
+    </div>
+  </div>
+
+  <!-- フッター（wireframe_top.html と共通） -->
+  <div class="footer">
+    <div class="footer-nav">
+      <a href="./wireframe_top.html">トップ</a>
+      <a href="./wireframe_members.html">メンバー紹介</a>
+    </div>
+    <div class="footer-copy">© 2026 BNI 岐阜 真チャプター. All Rights Reserved.</div>
+    <div style="font-size:10px; color:#e06000; margin-top:8px;">▲ 注釈：フッターは全ページ共通（リンクは2項目）。</div>
+  </div>
+
+</div>
+
+</body>
+</html>
+

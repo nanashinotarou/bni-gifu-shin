@@ -1,1 +1,7 @@
 https://bni-gifu-shin.pages.dev/
+
+## ワイヤーフレーム直リンク
+- トップページ: https://bni-gifu-shin.pages.dev/wireframe_top.html
+- BNIとは: https://bni-gifu-shin.pages.dev/wireframe_about.html
+- よくある質問: https://bni-gifu-shin.pages.dev/wireframe_faq.html
+- お問い合わせ: https://bni-gifu-shin.pages.dev/wireframe_contact.html

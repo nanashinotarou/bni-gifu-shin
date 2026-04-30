@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WordPress実装仕様書 - BNI岐阜 真チャプター</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; font-size: 15px; color: #333; background: #f5f5f5; line-height: 1.7; }
+    .wrapper { max-width: 860px; margin: 40px auto; background: #fff; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; }
+    .header { background: #cc0000; color: #fff; padding: 24px 32px; }
+    .header h1 { font-size: 20px; }
+    .header p { font-size: 13px; opacity: 0.85; margin-top: 4px; }
+    .body { padding: 32px; }
+    h2 { font-size: 16px; font-weight: bold; color: #cc0000; border-bottom: 2px solid #cc0000; padding-bottom: 6px; margin: 28px 0 14px; }
+    h2:first-child { margin-top: 0; }
+    h3 { font-size: 14px; font-weight: bold; color: #555; margin: 16px 0 8px; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 8px; }
+    th { background: #f0f0f0; text-align: left; padding: 9px 12px; font-weight: bold; border: 1px solid #ddd; white-space: nowrap; }
+    td { padding: 9px 12px; border: 1px solid #ddd; vertical-align: top; line-height: 1.6; }
+    td code, p code, li code { background: #f0f0f0; padding: 1px 5px; border-radius: 3px; font-size: 13px; font-family: monospace; }
+    pre { background: #1e1e1e; color: #d4d4d4; padding: 16px; border-radius: 4px; font-size: 13px; font-family: monospace; line-height: 1.6; overflow-x: auto; margin: 8px 0 12px; white-space: pre; }
+    .badge { display: inline-block; background: #cc0000; color: #fff; font-size: 12px; padding: 2px 7px; border-radius: 3px; font-weight: bold; margin-left: 4px; vertical-align: middle; }
+    .badge-wait { background: #f5a623; }
+    ul { padding-left: 20px; }
+    ul li { margin-bottom: 6px; }
+    .note { font-size: 13px; color: #666; margin-top: 8px; }
+    .alert { background: #fff8e1; border-left: 4px solid #f5a623; padding: 12px 16px; font-size: 14px; margin-top: 8px; line-height: 1.6; }
+    .info { background: #e8f4fd; border-left: 4px solid #2196f3; padding: 12px 16px; font-size: 14px; margin-top: 8px; line-height: 1.6; }
+    a { color: #0066cc; }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="header">
+    <h1>WordPress 実装仕様書｜BNI岐阜 真チャプター サイトリニューアル</h1>
+    <p>作成：金子浩也　最終更新：2026-04-28　対象：水戸唯人さん（コーディング担当）</p>
+  </div>
+
+  <div class="body">
+
+    <h2>プロジェクト概要</h2>
+    <table>
+      <tr><th>項目</th><th>内容</th></tr>
+      <tr><td>サイト種別</td><td>チャプター単体のインフォメーションサイト（シンプル構成）</td></tr>
+      <tr><td>ページ数</td><td>2ページ（トップ ＋ メンバー紹介）</td></tr>
+      <tr><td>CMS</td><td>WordPress</td></tr>
+      <tr><td>ドメイン</td><td>.jp（取得中。確定次第連絡あり）</td></tr>
+      <tr><td>目標完成</td><td>2026年5月中</td></tr>
+      <tr><td>絶対リミット</td><td>2026年6月24日（ビジネスオポチュニティー当日）</td></tr>
+    </table>
+
+    <h2>環境要件</h2>
+    <table>
+      <tr><th>項目</th><th>推奨バージョン</th><th>備考</th></tr>
+      <tr><td>PHP</td><td>8.1 以上</td><td>8.2 推奨</td></tr>
+      <tr><td>WordPress</td><td>6.4 以上</td><td>最新安定版を使用</td></tr>
+      <tr><td>MySQL</td><td>8.0 以上</td><td>MariaDB 10.6以上でも可</td></tr>
+    </table>
+
+    <h2>テーマ方針</h2>
+    <div class="info">
+      カスタムテーマ（スクラッチ）またはシンプルなスターターテーマをベースに制作してください。既製テーマ（Cocoon等）はカスタマイズの制約が多くなるため非推奨です。
+    </div>
+    <ul style="margin-top:12px;">
+      <li>テーマ名（任意）：<code>bni-shin</code> 推奨</li>
+      <li>必要テンプレート：<code>front-page.php</code>（トップ）、<code>archive-member.php</code>（メンバー一覧）、<code>header.php</code>、<code>footer.php</code></li>
+      <li>スタイル：カラー・フォントはこのドキュメント末尾の「デザイン仕様」を参照</li>
+    </ul>
+
+    <h2>ページ構成</h2>
+    <table>
+      <tr><th>ページ</th><th>URLイメージ</th><th>テンプレート</th><th>ワイヤーフレーム</th></tr>
+      <tr>
+        <td>トップ（Home）</td>
+        <td><code>/</code></td>
+        <td><code>front-page.php</code></td>
+        <td><code>wireframe_top.html</code></td>
+      </tr>
+      <tr>
+        <td>メンバー紹介</td>
+        <td><code>/members/</code></td>
+        <td><code>archive-member.php</code></td>
+        <td><code>wireframe_members.html</code></td>
+      </tr>
+    </table>
+    <p class="note" style="margin-top:8px;">ワイヤーフレームはブラウザで開いてください。オレンジ色テキストが実装向け注釈です。</p>
+
+    <h2>カスタム投稿タイプ：member</h2>
+    <p>メンバー情報はカスタム投稿タイプ <code>member</code> で管理します。将来的にメンバー自身が更新できることを想定した設計にしてください。</p>
+
+    <h3>投稿タイプ定義（functions.php に追記）</h3>
+<pre>function bni_register_member_post_type() {
+    register_post_type( 'member', [
+        'labels' => [
+            'name'               => 'メンバー',
+            'singular_name'      => 'メンバー',
+            'add_new_item'       => 'メンバーを追加',
+            'edit_item'          => 'メンバーを編集',
+            'all_items'          => 'メンバー一覧',
+        ],
+        'public'       => true,
+        'has_archive'  => true,
+        'rewrite'      => [ 'slug' => 'members' ],
+        'supports'     => [ 'title', 'thumbnail', 'custom-fields' ],
+        'menu_icon'    => 'dashicons-groups',
+        'show_in_rest' => true,
+    ]);
+}
+add_action( 'init', 'bni_register_member_post_type' );</pre>
+
+    <h3>カスタムフィールド（ACF または add_post_meta）</h3>
+    <table>
+      <tr><th>フィールド名（キー）</th><th>表示ラベル</th><th>型</th><th>必須</th></tr>
+      <tr><td><code>member_category</code></td><td>業種カテゴリー</td><td>テキスト</td><td>◯</td></tr>
+      <tr><td><code>member_comment</code></td><td>ひとことコメント</td><td>テキストエリア</td><td>◯</td></tr>
+    </table>
+    <p class="note" style="margin-top:8px;">氏名は投稿タイトル、写真はアイキャッチ画像として登録します。</p>
+
+    <h3>メンバー一覧の出力例（archive-member.php）</h3>
+<pre>&lt;div class="members-grid"&gt;
+  &lt;?php while ( have_posts() ) : the_post(); ?&gt;
+    &lt;div class="member-card"&gt;
+      &lt;?php if ( has_post_thumbnail() ) : ?&gt;
+        &lt;div class="member-photo"&gt;&lt;?php the_post_thumbnail('medium'); ?&gt;&lt;/div&gt;
+      &lt;?php endif; ?&gt;
+      &lt;div class="member-info"&gt;
+        &lt;div class="member-name"&gt;&lt;?php the_title(); ?&gt;&lt;/div&gt;
+        &lt;div class="member-biz"&gt;&lt;?php echo esc_html( get_post_meta( get_the_ID(), 'member_category', true ) ); ?&gt;&lt;/div&gt;
+        &lt;div class="member-comment"&gt;&lt;?php echo esc_html( get_post_meta( get_the_ID(), 'member_comment', true ) ); ?&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;?php endwhile; ?&gt;
+&lt;/div&gt;</pre>
+
+    <h2>ナビゲーション</h2>
+    <table>
+      <tr><th>項目</th><th>内容</th></tr>
+      <tr><td>メニュー項目</td><td>トップ（<code>/</code>）、メンバー紹介（<code>/members/</code>）の2項目のみ</td></tr>
+      <tr><td>PC表示</td><td>ヘッダー右端に横並び</td></tr>
+      <tr><td>スマホ表示</td><td>ハンバーガーメニュー（≡）に切り替え。タップでドロワー展開</td></tr>
+      <tr><td>現在ページ</td><td>アクティブなリンクを赤（<code>#CC0000</code>）でハイライト</td></tr>
+    </table>
+    <p class="note" style="margin-top:8px;">ハンバーガーの開閉はバニラJS（jQueryなし）で実装推奨。ブレークポイントは 768px 目安。</p>
+
+    <h2>お問い合わせ</h2>
+    <div class="info">
+      お問い合わせはメールリンクのみです。Contact Form 7 等のフォームプラグインは<strong>不要</strong>です。
+    </div>
+    <ul style="margin-top:12px;">
+      <li>実装：<code>&lt;a href="mailto:メールアドレス"&gt;お問い合わせはこちら&lt;/a&gt;</code></li>
+      <li>メールアドレス：<span style="color:#e06000;">⚠️ 未確定。ドメイン・サーバー取得後に確定。確定次第お知らせします。</span></li>
+      <li>設置箇所：トップページのCTAエリア（ワイヤーフレーム参照）とフッター</li>
+    </ul>
+
+    <h2>レスポンシブ対応</h2>
+    <table>
+      <tr><th>ブレークポイント目安</th><th>レイアウト変化</th></tr>
+      <tr><td>960px 以上（PC）</td><td>3カラムメンバーグリッド、横並びナビ</td></tr>
+      <tr><td>560px〜960px（タブレット）</td><td>2カラムメンバーグリッド</td></tr>
+      <tr><td>560px 未満（スマホ）</td><td>1カラム、ハンバーガーメニュー</td></tr>
+    </table>
+
+    <h2>推奨プラグイン（最小限）</h2>
+    <table>
+      <tr><th>プラグイン</th><th>用途</th><th>必須度</th></tr>
+      <tr>
+        <td>Advanced Custom Fields (ACF) 無料版</td>
+        <td>メンバーの業種カテゴリー・ひとことコメントフィールドの管理UI</td>
+        <td><span class="badge">必須</span></td>
+      </tr>
+      <tr>
+        <td>EWWW Image Optimizer</td>
+        <td>メンバー写真の自動最適化・WebP変換</td>
+        <td>推奨</td>
+      </tr>
+      <tr>
+        <td>Wordfence Security（無料版）</td>
+        <td>ログインブルートフォース対策・ファイアウォール</td>
+        <td>推奨</td>
+      </tr>
+    </table>
+    <div class="alert">
+      プラグインは上記以外を追加しないでください。Contact Form 7・Jetpack・重いページビルダー系は不要です。
+    </div>
+
+    <h2>確定値一覧</h2>
+    <table>
+      <tr><th>項目</th><th>値</th></tr>
+      <tr><td>例会曜日・時間</td><td>毎週水曜 8:45〜10:30（入室：8:30まで）</td></tr>
+      <tr><td>開催方法</td><td>Zoom開催</td></tr>
+      <tr><td>Zoom ID</td><td>985 7495 6197</td></tr>
+      <tr><td>Zoom パスコード</td><td>240515</td></tr>
+    </table>
+
+    <h2>未確定・確認待ち事項</h2>
+    <div class="alert">
+      以下は未確定です。仮表記・空欄にしておき、確定次第差し替えてください（連絡は金子より）。
+    </div>
+    <table style="margin-top:10px;">
+      <tr><th>項目</th><th>状況</th></tr>
+      <tr><td>問い合わせ用メールアドレス</td><td>ドメイン・サーバー取得後に作成予定（大久保さん担当）</td></tr>
+      <tr><td>大久保翔さんのメンバー情報</td><td>写真・業種カテゴリー・ひとことコメント。本人確認中</td></tr>
+      <tr><td>伊藤友美さんのカテゴリー</td><td>変更予定。クライアントから連絡待ち</td></tr>
+      <tr><td>ドメイン・サーバー情報</td><td>大久保さん担当で手配中</td></tr>
+    </table>
+
+    <h2>デザイン仕様（コーディング参照用）</h2>
+    <table>
+      <tr><th>項目</th><th>値</th></tr>
+      <tr><td>メインカラー</td><td><code>#CC0000</code>（BNI公式レッド）</td></tr>
+      <tr><td>テキストカラー</td><td><code>#333333</code></td></tr>
+      <tr><td>背景白</td><td><code>#FFFFFF</code></td></tr>
+      <tr><td>見出しフォント</td><td>Montserrat（Google Fonts）</td></tr>
+      <tr><td>本文フォント</td><td>Open Sans（Google Fonts）</td></tr>
+      <tr><td>ロゴ（通常）</td><td><code>backup_images/BNI_logo_Red_RGB.png</code></td></tr>
+      <tr><td>ロゴ（赤背景用）</td><td><code>backup_images/BNI_logo_White_RGB.png</code></td></tr>
+    </table>
+    <div class="alert">
+      BNIブランドガイドライン：ロゴの<strong>変形・回転・色変更・影付けは禁止</strong>です。クリアスペース（余白）も厳守してください。
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

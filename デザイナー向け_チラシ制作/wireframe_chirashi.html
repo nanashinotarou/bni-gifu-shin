@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>【ワイヤーフレーム】臨時チラシ（PDF） - BNI岐阜 真チャプター</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; font-size: 14px; color: #333; background: #f0f0f0; }
+
+    /* ワイヤーフレーム共通スタイル（old/wireframe_top.html 準拠） */
+    .wf-block {
+      background: #fff;
+      border: 2px solid #aaa;
+      padding: 16px;
+      margin: 0;
+    }
+    .wf-label {
+      font-size: 11px;
+      font-weight: bold;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    .wf-content {
+      font-size: 13px;
+      color: #555;
+    }
+    .wf-annotation {
+      font-size: 11px;
+      color: #e06000;
+      margin-top: 6px;
+      border-left: 3px solid #e06000;
+      padding-left: 8px;
+      line-height: 1.6;
+    }
+    .wf-placeholder {
+      background: #ddd;
+      border: 1px dashed #999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #888;
+      font-size: 12px;
+    }
+
+    /* ページ全体（A4縦を意識） */
+    .page-wrapper {
+      max-width: 794px; /* A4(210mm) @96dpi ≒ 794px */
+      margin: 30px auto;
+      background: #fff;
+      border: 3px solid #333;
+    }
+
+    /* ページ情報バー（ワイヤー外の説明） */
+    .page-meta {
+      background: #333;
+      color: #fff;
+      padding: 12px 16px;
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .page-meta strong { font-size: 16px; }
+
+    /* チラシ専用 */
+    .flyer-body { padding: 18px 18px 22px; }
+    .flyer-stack { display: grid; gap: 14px; }
+
+    .flyer-header {
+      display: grid;
+      grid-template-columns: 170px 1fr;
+      gap: 14px;
+      align-items: center;
+    }
+    .flyer-title h1 { font-size: 22px; margin-bottom: 4px; }
+    .flyer-title p { font-size: 13px; color: #666; line-height: 1.6; }
+
+    .flyer-banner {
+      border: 2px solid #777;
+      background: #f6f6f6;
+      padding: 14px;
+    }
+    .flyer-banner strong { font-size: 16px; }
+    .flyer-banner ul { margin-top: 8px; padding-left: 18px; color: #444; line-height: 1.7; font-size: 13px; }
+
+    .president-grid {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 14px;
+      align-items: start;
+    }
+    .president-photo { width: 140px; height: 160px; }
+    .president-lines { display: grid; gap: 6px; }
+    .president-lines div { font-size: 13px; color: #444; line-height: 1.6; }
+    .president-lines div strong { color: #333; }
+
+    .cta-band {
+      border: 2px solid #333;
+      background: #efefef;
+      padding: 14px;
+      text-align: center;
+    }
+    .cta-band h2 { font-size: 18px; margin-bottom: 8px; }
+    .cta-band p { font-size: 13px; color: #444; line-height: 1.6; }
+    .cta-email {
+      margin-top: 10px;
+      display: inline-block;
+      padding: 8px 12px;
+      border: 2px dashed #777;
+      background: #fff;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      color: #333;
+    }
+
+    .members-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .member-card {
+      border: 1px solid #bbb;
+      padding: 10px;
+      display: grid;
+      grid-template-columns: 54px 1fr;
+      gap: 10px;
+      align-items: center;
+      min-height: 78px;
+      background: #fff;
+    }
+    .member-photo { width: 54px; height: 54px; border-radius: 6px; }
+    .member-name { font-weight: bold; font-size: 13px; color: #333; }
+    .member-biz { font-size: 11px; color: #666; margin-top: 2px; line-height: 1.4; }
+
+    .glossary-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 13px;
+    }
+    .glossary-table th {
+      text-align: left;
+      white-space: nowrap;
+      padding: 8px 16px 8px 0;
+      font-weight: bold;
+      color: #333;
+      vertical-align: top;
+      width: 120px;
+    }
+    .glossary-table td {
+      padding: 8px 0;
+      color: #555;
+      line-height: 1.6;
+      border-bottom: 1px solid #eee;
+    }
+
+    .schedule-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 13px;
+    }
+    .schedule-table tr {
+      border-bottom: 1px solid #eee;
+    }
+    .schedule-table td {
+      padding: 10px 8px;
+      color: #555;
+      line-height: 1.6;
+      vertical-align: top;
+    }
+    .schedule-table td.time {
+      font-weight: bold;
+      color: #333;
+      white-space: nowrap;
+      padding-right: 20px;
+      width: 50px;
+    }
+
+    .flyer-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: baseline;
+      color: #666;
+      font-size: 12px;
+    }
+
+    @media print {
+      body { background: #fff; }
+      .page-wrapper { margin: 0; border: none; }
+      .page-meta { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .wf-annotation { color: #e06000; }
+    }
+  </style>
+</head>
+<body>
+
+<div style="max-width:794px; margin: 20px auto; font-size:12px; color:#555; padding: 0 10px;">
+  ⚠️ これはワイヤーフレームです。色・フォント・画像はすべて仮です。レイアウトと要素の配置のみを確認してください。
+</div>
+
+<div class="page-wrapper">
+  <div class="page-meta">
+    <div>
+      <div style="font-size:11px; opacity:0.7;">BNI岐阜 真チャプター サイトリニューアル</div>
+      <strong>臨時チラシ（LP）ワイヤーフレーム</strong>
+    </div>
+    <div style="font-size:11px; opacity:0.7;">対象：デザイナー</div>
+  </div>
+
+  <div class="flyer-body">
+    <div class="flyer-stack">
+
+      <!-- [A] ヘッダーブロック -->
+      <section class="wf-block">
+        <div class="wf-label">[A] Header block</div>
+        <div class="flyer-header">
+          <div class="wf-placeholder" style="width:160px; height:50px;">BNIロゴ（仮）</div>
+          <div class="flyer-title">
+            <h1>BNI 岐阜 真チャプター</h1>
+            <p>岐阜に生まれた、信頼でつながるビジネスコミュニティ（仮キャッチコピー）</p>
+          </div>
+        </div>
+        <div class="wf-annotation">注釈：BNIロゴは同梱の <code>BNIロゴ/BNI_logo_Red_RGB.png</code> を使用してください。取り扱いルールはREADMEを確認してください。</div>
+      </section>
+
+      <!-- [B] BNIとはブロック -->
+      <section class="wf-block">
+        <div class="wf-label">[B] What is BNI</div>
+        <div class="wf-content" style="font-weight:bold; font-size:16px; color:#333; margin-bottom:10px;">BNIとは</div>
+        <div class="wf-content">
+          BNIは1985年にアイヴァン・マイズナー博士により創設された世界最大級のビジネス・リファーラル組織です。
+          「ギバーズゲイン（Givers Gain®）」という理念に基づき、「与えるものは与えられる」という考え方で運営されています。
+          経営者や事業オーナーが信頼関係を築き、相互にリファーラルを提供し合うことで、全メンバーが良い結果を得られる仕組みです。
+        </div>
+        <div class="wf-annotation">注釈：テキストは確定です。</div>
+      </section>
+
+      <!-- [C] 用語解説ブロック -->
+      <section class="wf-block">
+        <div class="wf-label">[C] Glossary</div>
+        <div class="wf-content" style="font-weight:bold; font-size:16px; color:#333; margin-bottom:10px;">よく使う用語の解説</div>
+        <table class="glossary-table">
+          <tr>
+            <th>カテゴリー</th>
+            <td>専門分野（職種）のこと。BNIでは各分野から1名のみチャプターへの加入が認められています。</td>
+          </tr>
+          <tr>
+            <th>チャプター</th>
+            <td>世界中に11,000を超えるBNIのビジネスチームのこと。このチャプターは「真チャプター」です。</td>
+          </tr>
+          <tr>
+            <th>リファーラル</th>
+            <td>メンバーが他のメンバーに対して、見込み客の紹介やビジネスの機会を提供すること。</td>
+          </tr>
+          <tr>
+            <th>1to1</th>
+            <td>メンバー同士がお互いのビジネスや人柄を理解し合う、1対1のビジネスミーティング。</td>
+          </tr>
+          <tr>
+            <th>トレーニング</th>
+            <td>BNIの活用方法やビジネススキルを学ぶための、メンバー限定のプログラム。</td>
+          </tr>
+        </table>
+        <div class="wf-annotation">注釈：テキストは確定です。</div>
+      </section>
+
+      <!-- [D] プレジデント紹介ブロック -->
+      <section class="wf-block">
+        <div class="wf-label">[D] President</div>
+        <div class="president-grid">
+          <div class="wf-placeholder president-photo">写真（仮）</div>
+          <div class="president-lines">
+            <div><strong>役職：</strong>第5期プレジデント</div>
+            <div><strong>氏名：</strong>伊藤 友美</div>
+            <div><strong>カテゴリー：</strong>生命保険（福利厚生・年金見直し）</div>
+            <div><strong>ひとこと：</strong>「覚醒をテーマに、初心に帰り真の文化を作っていきます」（仮）</div>
+            <div style="margin-top:10px; font-size:13px; color:#555; line-height:1.7;">
+              第5期のテーマは「覚醒」。真チャプター立ち上がり1年半が経ち、メンバーが初心に帰り真の文化を作ることで
+              「本気でビジネスを応援する」姿勢を掲げています。
+            </div>
+          </div>
+        </div>
+        <div class="wf-annotation">注釈：写真は「メンバー写真/」フォルダ内の <code>itotomomi.jpg</code> を使用してください。メッセージ本文は確定です。<br>
+          ⚠️ カテゴリーは変更予定のため、確定次第お知らせします。</div>
+      </section>
+
+      <!-- [E] 例会情報ブロック -->
+      <section class="flyer-banner">
+        <div class="wf-label">[E] Meeting info (banner)</div>
+        <div class="wf-content">
+          <strong>毎週水曜日 8:45〜10:30</strong>
+          <ul>
+            <li>入室時間：8:30までにお入り下さい</li>
+            <li>Zoom開催（会場写真・地図は不要）</li>
+            <li>Zoom ID：985 7495 6197</li>
+            <li>パスコード：240515</li>
+          </ul>
+        </div>
+        <div class="wf-annotation">注釈：Zoom ID・パスコードは確定済み。</div>
+      </section>
+
+      <!-- [F] 当日の流れ -->
+      <section class="wf-block">
+        <div class="wf-label">[F] Schedule</div>
+        <div class="wf-content" style="font-weight:bold; font-size:16px; color:#333; margin-bottom:4px;">当日の流れ</div>
+        <div class="wf-content" style="font-size:12px; color:#888; margin-bottom:10px;">（予告なく変更される場合があります）</div>
+        <table class="schedule-table">
+          <tr>
+            <td class="time">8:30前</td>
+            <td>Zoomよりご入室いただき、「待機室」でお待ちください。</td>
+          </tr>
+          <tr>
+            <td class="time">8:30</td>
+            <td>【開始】招待者のほか、メンバー数人とお話しいただく時間を設けております。</td>
+          </tr>
+          <tr>
+            <td class="time">8:45</td>
+            <td>
+              定例会本番スタート。簡単にご挨拶いただきます。<br>
+              ブレイクアウトルームにてオープンネットワーキングや、リーダーシップチーム紹介、BNIの目的と概要紹介、学習コーナー等に続き、<br>
+              各メンバーのビジネスを全員が理解し営業できるよう、1人45秒間プレゼンを行います。<br>
+              <strong>ビジター様にも、ご自身のお仕事を45秒間で紹介していただく時間を設けています。</strong>
+            </td>
+          </tr>
+          <tr>
+            <td class="time">9:30</td>
+            <td>ブレイクアウトルームにて、新規顧客の紹介が生まれる様子をご覧ください。メインプレゼンテーション、メンバーへの推薦や承認などが行われます。</td>
+          </tr>
+          <tr>
+            <td class="time">9:55</td>
+            <td>各メンバーから全員へ、今週の貢献発表。</td>
+          </tr>
+          <tr>
+            <td class="time">10:10</td>
+            <td>本日ご参加いただいたご感想をお聞かせください。</td>
+          </tr>
+          <tr>
+            <td class="time">10:15</td>
+            <td>BNIへのご質問や、紹介してほしい方などをブレイクアウトルームにてお伺いします。個別に話したいメンバーがいましたらお気軽にお知らせください。</td>
+          </tr>
+          <tr>
+            <td class="time">10:30</td>
+            <td>【終了】ご参加いただきありがとうございました。</td>
+          </tr>
+        </table>
+        <div class="wf-annotation">
+          注釈：スケジュールは確定値です。変更が生じた場合はお知らせします。
+        </div>
+      </section>
+
+      <!-- [G] メンバー紹介グリッド -->
+      <section class="wf-block">
+        <div class="wf-label">[G] Members</div>
+        <div class="wf-content" style="font-weight:bold; font-size:16px; color:#333;">メンバー紹介</div>
+
+        <div class="members-grid">
+          <div class="member-card">
+            <div class="wf-placeholder member-photo">写真</div>
+            <div>
+              <div class="member-name">岩田 智子</div>
+              <div class="member-biz">天国まで歩いていける健康学</div>
+            </div>
+          </div>
+          <div class="member-card">
+            <div class="wf-placeholder member-photo">写真</div>
+            <div>
+              <div class="member-name">四郎丸 輝</div>
+              <div class="member-biz">節税アドバイザー</div>
+            </div>
+          </div>
+          <div class="member-card">
+            <div class="wf-placeholder member-photo">写真</div>
+            <div>
+              <div class="member-name">伊藤 友美</div>
+              <div class="member-biz">生命保険（福利厚生・年金見直し）</div>
+            </div>
+          </div>
+
+          <div class="member-card">
+            <div class="wf-placeholder member-photo">写真</div>
+            <div>
+              <div class="member-name">狩野 健</div>
+              <div class="member-biz">現役整備士が提案する損害保険</div>
+            </div>
+          </div>
+          <div class="member-card">
+            <div class="wf-placeholder member-photo">写真</div>
+            <div>
+              <div class="member-name">森田 明菜</div>
+              <div class="member-biz">東洋医学専門家</div>
+            </div>
+          </div>
+          <div class="member-card">
+            <div class="wf-placeholder member-photo">写真</div>
+            <div>
+              <div class="member-name">浅尾 竜也</div>
+              <div class="member-biz">自動車売買</div>
+            </div>
+          </div>
+
+          <div class="member-card">
+            <div class="wf-placeholder member-photo">写真</div>
+            <div>
+              <div class="member-name">櫻井 ゆかり</div>
+              <div class="member-biz">紹介予約制プライベートブティック</div>
+            </div>
+          </div>
+          <div class="member-card">
+            <div class="wf-placeholder member-photo">写真</div>
+            <div>
+              <div class="member-name">三輪 真理</div>
+              <div class="member-biz">オンラインスパルタ英会話</div>
+            </div>
+          </div>
+          <div class="member-card">
+            <div class="wf-placeholder member-photo">写真</div>
+            <div>
+              <div class="member-name">伊藤 幹朗</div>
+              <div class="member-biz">税理士</div>
+            </div>
+          </div>
+
+          <div class="member-card">
+            <div class="wf-placeholder member-photo">写真</div>
+            <div>
+              <div class="member-name">清水 紀秀</div>
+              <div class="member-biz">農家専門EC運営</div>
+            </div>
+          </div>
+          <div class="member-card">
+            <div class="wf-placeholder member-photo">写真</div>
+            <div>
+              <div class="member-name">臼井 常雄</div>
+              <div class="member-biz">建築営業支援・施工支援</div>
+            </div>
+          </div>
+          <div class="member-card">
+            <div class="wf-placeholder member-photo">写真</div>
+            <div>
+              <div class="member-name">林 貞明</div>
+              <div class="member-biz">屋根工事</div>
+            </div>
+          </div>
+
+          <div class="member-card">
+            <div class="wf-placeholder member-photo">写真</div>
+            <div>
+              <div class="member-name">鈴木 博</div>
+              <div class="member-biz">建物リフォーム</div>
+            </div>
+          </div>
+          <div class="member-card">
+            <div class="wf-placeholder member-photo">写真</div>
+            <div>
+              <div class="member-name">安藤 勇斗</div>
+              <div class="member-biz">ハウスクリーニング</div>
+            </div>
+          </div>
+          <div class="member-card">
+            <div class="wf-placeholder member-photo">写真（未定）</div>
+            <div>
+              <div class="member-name">大久保 翔</div>
+              <div class="member-biz">（カテゴリー未定）</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wf-annotation">
+          注釈：氏名・カテゴリーは同梱の「260422メンバー表.pdf」の表記を使用してください。写真は「メンバー写真/」フォルダを参照（詳細はREADMEを確認）。大久保翔さんは写真・カテゴリー未定のため枠のみで構いません。
+        </div>
+      </section>
+
+      <!-- [H] フッターブロック（旧[G]Contact + 旧[I]Footer 統合） -->
+      <section class="wf-block">
+        <div class="wf-label">[H] Footer（Contact統合）</div>
+        <div style="text-align:center; padding: 12px 0 18px;">
+          <div class="wf-content" style="font-weight:bold; font-size:18px; margin-bottom:8px;">ご興味のある方はお気軽に</div>
+          <p style="font-size:13px; color:#555; margin-bottom:14px;">Zoom開催ですので、まずはお問い合わせのうえ、ぜひ一度覗いてみてください。</p>
+          <div class="cta-email">お問い合わせ：info@●●●.jp（仮）</div>
+        </div>
+        <hr style="border:none; border-top:1px solid #ddd; margin: 0 0 12px;">
+        <div class="flyer-footer">
+          <div>BNI 岐阜 真チャプター</div>
+        </div>
+        <div class="wf-annotation">注釈：メールアドレスは仮表記です。確定次第お知らせします。デザインのトーンは「見学募集」色を出さず、Zoom開催の気軽さを前面に出してください。</div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
+

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>水戸さんへ - BNI岐阜 真チャプター サイトリニューアル 引継ぎ資料</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; font-size: 15px; color: #333; background: #f5f5f5; line-height: 1.7; }
+    .wrapper { max-width: 860px; margin: 40px auto; background: #fff; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; }
+    .header { background: #cc0000; color: #fff; padding: 24px 32px; }
+    .header h1 { font-size: 20px; }
+    .header p { font-size: 13px; opacity: 0.85; margin-top: 4px; }
+    .body { padding: 32px; }
+    h2 { font-size: 16px; font-weight: bold; color: #cc0000; border-bottom: 2px solid #cc0000; padding-bottom: 6px; margin: 28px 0 14px; }
+    h2:first-child { margin-top: 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 8px; }
+    th { background: #f0f0f0; text-align: left; padding: 9px 12px; font-weight: bold; border: 1px solid #ddd; white-space: nowrap; }
+    td { padding: 9px 12px; border: 1px solid #ddd; vertical-align: top; line-height: 1.6; }
+    td code { background: #f0f0f0; padding: 1px 5px; border-radius: 3px; font-size: 13px; font-family: monospace; }
+    .badge { display: inline-block; background: #cc0000; color: #fff; font-size: 12px; padding: 2px 7px; border-radius: 3px; font-weight: bold; margin-left: 4px; vertical-align: middle; }
+    .badge-wait { background: #f5a623; }
+    .badge-done { background: #4caf50; }
+    ul { padding-left: 20px; }
+    ul li { margin-bottom: 6px; }
+    .note { font-size: 13px; color: #666; margin-top: 8px; }
+    .alert { background: #fff8e1; border-left: 4px solid #f5a623; padding: 12px 16px; font-size: 14px; margin-top: 8px; line-height: 1.6; }
+    .info { background: #e8f4fd; border-left: 4px solid #2196f3; padding: 12px 16px; font-size: 14px; margin-top: 8px; line-height: 1.6; }
+    a { color: #0066cc; }
+    .check-done { color: #4caf50; font-weight: bold; }
+    .check-wait { color: #f5a623; font-weight: bold; }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <div class="header">
+    <h1>水戸さんへ｜BNI岐阜 真チャプター サイトリニューアル 引継ぎ資料</h1>
+    <p>作成：金子浩也　最終更新：2026-04-28　※ 詳細は project_log.md を参照してください</p>
+  </div>
+
+  <div class="body">
+
+    <h2>まず読んでほしいもの</h2>
+    <table>
+      <tr>
+        <th>ファイル</th>
+        <th>内容</th>
+      </tr>
+      <tr>
+        <td><code>project_log.md</code> <span class="badge">最重要</span></td>
+        <td>プロジェクトの背景・経緯・クライアントとのやり取り・確定事項・次のアクションが全部入っています。<strong>まずここを読んでください。</strong></td>
+      </tr>
+      <tr>
+        <td><code>wireframe_top.html</code></td>
+        <td>トップページのワイヤーフレーム。ブラウザで開いてください。オレンジ色テキストが注釈です。</td>
+      </tr>
+      <tr>
+        <td><code>wireframe_members.html</code></td>
+        <td>メンバー紹介ページのワイヤーフレーム。同上。</td>
+      </tr>
+      <tr>
+        <td><code>backup_images/</code></td>
+        <td>メンバー写真一式 ＋ BNIロゴデータ。コーディング時はここから使用してください。</td>
+      </tr>
+    </table>
+
+    <h2>プロジェクト体制</h2>
+    <table>
+      <tr><th>名前</th><th>役割</th></tr>
+      <tr><td>大久保翔さん</td><td>上司。ドメイン・サーバー選定、クライアント折衝担当。</td></tr>
+      <tr><td>金子浩也</td><td>制作担当（自分）。ワイヤーフレーム・WP仕様・素材整備。疑問点は気軽に連絡してください。</td></tr>
+      <tr><td>水戸唯人さん</td><td>コーディング担当（あなた）。ワイヤーフレームをもとに実装をお願いします。</td></tr>
+      <tr><td>BNI岐阜 真チャプター</td><td>クライアント。窓口は三輪さん。</td></tr>
+    </table>
+
+    <h2>サイト概要・方針</h2>
+    <div class="info">
+      チャプター単体のシンプルなインフォメーションサイトです。リージョン（広域）レベルのコンテンツ（FAQ・入会申込フォームなど）は掲載しません。<strong>「見学募集」色は出さないこと。</strong>
+    </div>
+    <table style="margin-top:12px;">
+      <tr><th>項目</th><th>決定内容</th></tr>
+      <tr><td>ページ数</td><td>2ページ構成（トップ ＋ メンバー紹介）</td></tr>
+      <tr><td>CMS</td><td>WordPress。メンバーはカスタム投稿タイプで管理</td></tr>
+      <tr><td>お問い合わせ</td><td><code>mailto:</code>リンクのみ。フォーム・プラグイン不要</td></tr>
+      <tr><td>レスポンシブ</td><td>スマホ対応必須。ハンバーガーメニュー含む</td></tr>
+      <tr><td>ドメイン</td><td>.jp（取得中）。確定次第連絡あり</td></tr>
+    </table>
+
+    <h2>WordPress 実装要件</h2>
+    <table>
+      <tr><th>機能</th><th>実装方法</th></tr>
+      <tr>
+        <td>メンバー管理</td>
+        <td>カスタム投稿タイプ <code>member</code> を作成。表示項目：氏名・業種カテゴリー・写真・ひとことコメント。メンバーが自分たちで更新できることを意識した設計にしてください。</td>
+      </tr>
+      <tr>
+        <td>お問い合わせ</td>
+        <td><code>mailto:</code>リンクのみ。Contact Form 7 等のフォームプラグインは不要。</td>
+      </tr>
+      <tr>
+        <td>レスポンシブ</td>
+        <td>スマホ対応必須。ナビはハンバーガーメニューに切り替え。</td>
+      </tr>
+    </table>
+
+    <h2>カラー・ロゴ・フォント</h2>
+    <table>
+      <tr><th>項目</th><th>指定</th></tr>
+      <tr><td>メインカラー</td><td>BNI公式レッド：<code>#CC0000</code></td></tr>
+      <tr><td>サブカラー</td><td>白 <code>#FFFFFF</code>、濃いグレー <code>#333333</code></td></tr>
+      <tr>
+        <td>ロゴ（通常）</td>
+        <td><code>backup_images/BNI_logo_Red_RGB.png</code>（Web用・赤・RGB）← 基本これ</td>
+      </tr>
+      <tr>
+        <td>ロゴ（赤背景用）</td>
+        <td><code>backup_images/BNI_logo_White_RGB.png</code>（赤ヘッダー等に使用）</td>
+      </tr>
+      <tr>
+        <td>フォント</td>
+        <td>Montserrat（見出し・推奨）/ Open Sans（本文）/ Roboto（汎用）。Google Fonts で取得してください。</td>
+      </tr>
+    </table>
+    <div class="alert">
+      ⚠️ BNIブランドガイドライン：ロゴの<strong>変形・回転・色変更・影付けは禁止</strong>です。クリアスペース（余白）も厳守してください。
+    </div>
+
+    <h2>確定済みの値</h2>
+    <table>
+      <tr><th>項目</th><th>値</th></tr>
+      <tr><td>例会曜日・時間</td><td>毎週水曜 8:45〜10:30（入室：8:30まで）</td></tr>
+      <tr><td>開催方法</td><td>Zoom開催（基本オンライン）</td></tr>
+      <tr><td>Zoom ID</td><td>985 7495 6197</td></tr>
+      <tr><td>Zoom パスコード</td><td>240515</td></tr>
+      <tr><td>プレジデント写真</td><td><code>backup_images/itotomomi.jpg</code>（伊藤 友美）</td></tr>
+    </table>
+
+    <h2>写真ファイル名 対応表</h2>
+    <table>
+      <tr><th>ファイル名</th><th>氏名</th><th>備考</th></tr>
+      <tr><td><code>backup_images/itotomomi.jpg</code></td><td>伊藤 友美</td><td>プレジデント</td></tr>
+      <tr><td><code>backup_images/iwata.jpg</code></td><td>岩田 智子</td><td></td></tr>
+      <tr><td><code>backup_images/shiromaru.jpg</code></td><td>四郎丸 輝</td><td></td></tr>
+      <tr><td><code>backup_images/karino.jpg</code></td><td>狩野 健</td><td></td></tr>
+      <tr><td><code>backup_images/morita.jpg</code></td><td>森田 明菜</td><td></td></tr>
+      <tr><td><code>backup_images/asao.jpg</code></td><td>浅尾 竜也</td><td></td></tr>
+      <tr><td><code>backup_images/sakurai_bni.jpg</code></td><td>櫻井 ゆかり</td><td></td></tr>
+      <tr><td><code>backup_images/miwa.jpg</code></td><td>三輪 真理</td><td></td></tr>
+      <tr><td><code>backup_images/itomikio.jpg</code></td><td>伊藤 幹朗</td><td></td></tr>
+      <tr><td><code>backup_images/shimizu.jpg</code></td><td>清水 紀秀</td><td></td></tr>
+      <tr><td><code>backup_images/usui.jpg</code></td><td>臼井 常雄</td><td></td></tr>
+      <tr><td><code>backup_images/hayashi.jpg</code></td><td>林 貞明</td><td></td></tr>
+      <tr><td><code>backup_images/suzukihiroshi.jpg</code></td><td>鈴木 博</td><td></td></tr>
+      <tr><td><code>backup_images/ando.jpg</code></td><td>安藤 勇斗</td><td></td></tr>
+      <tr><td>（なし）</td><td>大久保 翔</td><td><span class="check-wait">▲ 写真・カテゴリー・ひとこと未定。枠のみで対応。確定次第連絡あり。</span></td></tr>
+    </table>
+
+    <h2>確認待ち・未確定の項目</h2>
+    <div class="alert">
+      以下は現時点で未確定です。コーディング時は仮表記か空欄にしておき、確定次第差し替えてください。
+    </div>
+    <table style="margin-top:10px;">
+      <tr><th>項目</th><th>状況</th></tr>
+      <tr>
+        <td>問い合わせ用メールアドレス</td>
+        <td><span class="check-wait">▲ 未確定。</span>ドメイン・サーバー取得後に作成予定（大久保さん担当）。</td>
+      </tr>
+      <tr>
+        <td>大久保翔さんのメンバー情報</td>
+        <td><span class="check-wait">▲ 未確定。</span>写真・業種（組合名）・ひとことコメント。本人に直接依頼中。</td>
+      </tr>
+      <tr>
+        <td>伊藤友美さんのカテゴリー</td>
+        <td><span class="check-wait">▲ 変更予定。</span>確定次第クライアントより連絡あり。</td>
+      </tr>
+    </table>
+
+    <h2>スケジュール</h2>
+    <table>
+      <tr><th>マイルストーン</th><th>期日</th></tr>
+      <tr><td>ワイヤーフレーム渡し（バトンパッケージ）</td><td>2026年5月中旬（目標）</td></tr>
+      <tr><td>サイト完成目標</td><td>2026年5月中</td></tr>
+      <tr><td>絶対リミット</td><td><strong>2026年6月24日</strong>（ビジネスオポチュニティー当日）</td></tr>
+    </table>
+
+    <h2>参照サイト</h2>
+    <table>
+      <tr><th>用途</th><th>URL</th></tr>
+      <tr>
+        <td>現行サイト（デザイン参考）</td>
+        <td><a href="https://innocent-web.com/gifu_shin/" target="_blank">https://innocent-web.com/gifu_shin/</a><br>
+        <span class="note">※ 管理者不在のため閉鎖リスクあり。参照は早めに。</span></td>
+      </tr>
+      <tr>
+        <td>BNI公式（カラー・トーン参考）</td>
+        <td><a href="https://tokyo.bni.jp/ja/index" target="_blank">https://tokyo.bni.jp/ja/index</a></td>
+      </tr>
+    </table>
+
+    <h2>フォルダ構成メモ</h2>
+    <table>
+      <tr><th>フォルダ・ファイル</th><th>内容</th></tr>
+      <tr><td><code>wireframe_top.html</code></td><td>トップページ ワイヤーフレーム</td></tr>
+      <tr><td><code>wireframe_members.html</code></td><td>メンバー紹介ページ ワイヤーフレーム</td></tr>
+      <tr><td><code>backup_images/</code></td><td>メンバー写真 ＋ BNIロゴデータ一式</td></tr>
+      <tr><td><code>project_log.md</code></td><td>プロジェクト詳細ログ</td></tr>
+      <tr><td><code>old/</code></td><td>旧ワイヤーフレーム（参考保管。使用しないでOK）</td></tr>
+      <tr><td><code>デザイナー向け_チラシ制作/</code></td><td>チラシ（別タスク）。コーディングには関係なし</td></tr>
+      <tr><td><code>_作業メモ/</code></td><td>内部作業メモ（参照不要）</td></tr>
+    </table>
+
+  </div>
+</div>
+</body>
+</html>
