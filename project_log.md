@@ -237,3 +237,16 @@ WordPressで誰でも更新できる構造にすること。
 - **wireframe_contact.html**：連絡先カード（TEL/Mail）＋フォーム8項目（氏名・会社・業種・Mail・TEL・種別ラジオ・希望見学日・内容・同意チェック）＋問い合わせフローの4ステップ。Contact Form 7 ＋ Conditional Fields ＋ reCAPTCHA v3 を想定。末尾に水戸さん向け実装メモ。
 
 共通：全ページに `.page-meta` / 赤帯 / 6項目ヘッダーナビ（現在位置を赤でアクティブ表示）/ パンくず / CTA帯 / 共通フッターを配置。スタイルは `wireframe_top.html` の `<style>` を踏襲し、下層ページ用に簡易ヒーロー・フォーム・FAQ系の追加スタイルのみ拡張。
+
+## 2026-05-07 作業ログ
+
+急ぎ対応となっていた臨時チラシ（`chirashi/index.html`）の構築、修正およびデプロイを実施。
+
+- **チラシのIndex実装・修正**:
+  - `chirashi/index.html` にて、スマートフォン閲覧時にメンバーグリッド（`grid-template-columns: repeat(2, 1fr)`）が原因で画面全体が縮小・右側に余白ができてしまうレスポンシブ崩れの問題を修正。`minmax(0, 1fr)` を指定することで横幅のオーバーフローを解消。
+  - プロジェクトのロゴ画像（`BNI_logo_Red_RGB.png`）をもとに、faviconおよびapple-touch-iconの設定を追加。
+- **デプロイ作業（一気通貫パイプライン）**:
+  - Cloudflare Pagesへの自動デプロイを実施。
+  - デプロイ先URLを `site_url.txt` へ記録し、GitHubへコミットおよびプッシュを完了。
+
+チラシ公開URL: https://bni-gifu-shin.pages.dev/chirashi/index.html
