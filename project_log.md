@@ -244,7 +244,7 @@ WordPressで誰でも更新できる構造にすること。
 
 - **チラシのIndex実装・修正**:
   - `chirashi/index.html` にて、スマートフォン閲覧時にメンバーグリッド（`grid-template-columns: repeat(2, 1fr)`）が原因で画面全体が縮小・右側に余白ができてしまうレスポンシブ崩れの問題を修正。`minmax(0, 1fr)` を指定することで横幅のオーバーフローを解消。
-  - プロジェクトのロゴ画像（`BNI_logo_Red_RGB.png`）をもとに、faviconおよびapple-touch-iconの設定を追加。
+  - プロジェクトのロゴ画像（`BNI_logo_Red_RGB.png`）をもとに、余白（パディング）を設けた正方形の `favicon.png` を生成し、アイコンが大きく表示されすぎる問題を修正。
 - **デプロイ作業（一気通貫パイプライン）**:
   - Cloudflare Pagesへの自動デプロイを実施。
   - デプロイ先URLを `site_url.txt` へ記録し、GitHubへコミットおよびプッシュを完了。
