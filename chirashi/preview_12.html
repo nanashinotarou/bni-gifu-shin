@@ -64,48 +64,46 @@
     /* ─── [A] ヘッダー ─── */
     .site-header {
       border-bottom: 3px solid #CC0000;
-      background-image: url('assets/shin_full_banner_v4.jpg');
+      position: relative;
+      overflow: hidden;
+    }
+    .site-header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: url('assets/shin_bg.jpg');
       background-size: cover;
       background-position: center;
-      background-repeat: no-repeat;
-      height: 290px;
+      opacity: 0.4;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .header-inner {
       position: relative;
+      z-index: 1;
     }
 
     .header-inner {
-      width: 100%;
-      height: 100%;
-      position: relative;
+      padding: 20px 32px;
+      display: flex;
+      gap: 22px;
+      align-items: center;
     }
 
-    .bni-logo-wrapper {
-      position: absolute;
-      top: 30px;
-      left: 32px;
-    }
-
-    .bni-logo { 
-      height: 65px; 
-      width: auto; 
-    }
-
-    .header-title {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      width: 100%;
+    .bni-logo { height: 60px; width: auto; }
+    
+    .chapter-logo {
+      height: 60px;
+      width: auto;
+      object-fit: contain;
     }
 
     .header-title h1 {
       font-family: 'Montserrat', 'Noto Sans JP', sans-serif;
-      font-size: 46px;
+      font-size: 28px;
       font-weight: 700;
       color: #333;
-      letter-spacing: 0.1em;
-      line-height: 1.4;
-      text-shadow: 0 0 10px rgba(255,255,255,0.9), 0 0 20px rgba(255,255,255,0.7);
+      letter-spacing: 0.03em;
     }
 
     /* ─── [B] BNIとは ─── */
@@ -359,9 +357,7 @@
 <div class="page-wrapper">
   <header class="site-header">
     <div class="header-inner">
-      <div class="bni-logo-wrapper">
-        <img src="assets/BNI_logo_Red_RGB.png" alt="BNI" class="bni-logo">
-      </div>
+      <img src="assets/BNI_logo_Red_RGB.png" alt="BNI" class="bni-logo">
       <div class="header-title">
         <h1>BNI 岐阜　真チャプター</h1>
       </div>
@@ -619,7 +615,7 @@
   <footer class="site-footer">
     <div class="container">
       <h2 class="footer-cta-title">お問い合わせ、ご質問はお気軽に</h2>
-      <a href="mailto:contact@shin-bni.jp" class="cta-button">お問い合わせ：contact@shin-bni.jp</a>
+      <a href="mailto:info@example.jp" class="cta-button">お問い合わせ：info@●●●.jp</a>
       <p class="footer-name">BNI 岐阜 真チャプター</p>
     </div>
   </footer>

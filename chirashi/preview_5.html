@@ -62,50 +62,29 @@
     section { padding: 0; }
 
     /* ─── [A] ヘッダー ─── */
-    .site-header {
-      border-bottom: 3px solid #CC0000;
-      background-image: url('assets/shin_full_banner_v4.jpg');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      height: 290px;
-      position: relative;
-    }
+    .site-header { border-bottom: 3px solid #CC0000; }
 
     .header-inner {
-      width: 100%;
-      height: 100%;
-      position: relative;
+      padding: 20px 32px;
+      display: flex;
+      gap: 22px;
+      align-items: center;
     }
 
-    .bni-logo-wrapper {
-      position: absolute;
-      top: 30px;
-      left: 32px;
-    }
-
-    .bni-logo { 
-      height: 65px; 
-      width: auto; 
-    }
-
-    .header-title {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      width: 100%;
+    .bni-logo { height: 60px; width: auto; }
+    
+    .chapter-logo {
+      height: 60px;
+      width: auto;
+      object-fit: contain;
     }
 
     .header-title h1 {
       font-family: 'Montserrat', 'Noto Sans JP', sans-serif;
-      font-size: 46px;
+      font-size: 28px;
       font-weight: 700;
       color: #333;
-      letter-spacing: 0.1em;
-      line-height: 1.4;
-      text-shadow: 0 0 10px rgba(255,255,255,0.9), 0 0 20px rgba(255,255,255,0.7);
+      letter-spacing: 0.03em;
     }
 
     /* ─── [B] BNIとは ─── */
@@ -352,16 +331,51 @@
       .members-grid { grid-template-columns: 1fr; }
       .empty-card { display: none; }
     }
-  </style>
+  
+    .section-banner-split {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      background: #fafafa;
+      padding: 40px 50px;
+      border-radius: 12px;
+      margin: 20px 20px 24px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      border-left: 6px solid #CC0000;
+    }
+    .banner-split-logo {
+      width: 220px;
+      height: auto;
+      flex-shrink: 0;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+    }
+    .banner-split-content {
+      text-align: left;
+    }
+    .banner-split-title {
+      font-size: 24px;
+      color: #CC0000;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+    .banner-split-desc {
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 1.6;
+    }
+    @media (max-width: 700px) {
+      .section-banner-split { flex-direction: column; text-align: center; padding: 30px 20px; gap: 20px; }
+      .banner-split-content { text-align: center; }
+    }
+</style>
 </head>
 
 <body>
 <div class="page-wrapper">
   <header class="site-header">
     <div class="header-inner">
-      <div class="bni-logo-wrapper">
-        <img src="assets/BNI_logo_Red_RGB.png" alt="BNI" class="bni-logo">
-      </div>
+      <img src="assets/BNI_logo_Red_RGB.png" alt="BNI" class="bni-logo">
       <div class="header-title">
         <h1>BNI 岐阜　真チャプター</h1>
       </div>
@@ -369,6 +383,13 @@
   </header>
 
   <main>
+    <section class="section-banner-split">
+      <img src="assets/shin_chapter_logo.png" class="banner-split-logo" alt="真チャプター">
+      <div class="banner-split-content">
+        <h2 class="banner-split-title">世界最大級のビジネス・リファーラル組織</h2>
+        <p class="banner-split-desc">「ギバーズゲイン（与える者は与えられる）」の理念のもと<br>売上アップを目指す経営者・事業主のチームです。</p>
+      </div>
+    </section>
     <section class="section-bni-about">
       <div class="container">
         <div class="bni-about-box">
@@ -619,7 +640,7 @@
   <footer class="site-footer">
     <div class="container">
       <h2 class="footer-cta-title">お問い合わせ、ご質問はお気軽に</h2>
-      <a href="mailto:contact@shin-bni.jp" class="cta-button">お問い合わせ：contact@shin-bni.jp</a>
+      <a href="mailto:info@example.jp" class="cta-button">お問い合わせ：info@●●●.jp</a>
       <p class="footer-name">BNI 岐阜 真チャプター</p>
     </div>
   </footer>
