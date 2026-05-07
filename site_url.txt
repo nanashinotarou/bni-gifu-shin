@@ -5,3 +5,4 @@ https://bni-gifu-shin.pages.dev/
 - BNIとは: https://bni-gifu-shin.pages.dev/wireframe_about.html
 - よくある質問: https://bni-gifu-shin.pages.dev/wireframe_faq.html
 - お問い合わせ: https://bni-gifu-shin.pages.dev/wireframe_contact.html
+- チラシ: https://bni-gifu-shin.pages.dev/chirashi/index.html
