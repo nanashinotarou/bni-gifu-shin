@@ -180,25 +180,45 @@
       flex: 0 0 auto;
     }
 
-    .president-info dl {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 11px 16px;
-      font-size: 18px;
-      padding-bottom: 16px;
-      border-bottom: 2px solid #CC0000;
-      margin-bottom: 0;
+    /* 名前ブロック（上段）: 氏名大 + 役職小 */
+    .president-name {
+      font-size: 28px;
+      font-weight: 700;
+      color: #222;
+      line-height: 1.2;
+      margin-bottom: 4px;
     }
 
-    .president-info dt { font-weight: 700; color: #333; white-space: nowrap; }
-    .president-info dt::after { content: "："; font-weight: 400; }
-    .president-info dd { color: #333; }
+    .president-role {
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 14px;
+    }
+
+    .president-divider {
+      border: none;
+      border-top: 2px solid #CC0000;
+      margin: 0 0 16px 0;
+    }
+
+    /* カテゴリー・ひとことブロック（下段） */
+    .president-meta {
+      font-size: 16px;
+      color: #444;
+      line-height: 1.9;
+      margin-bottom: 16px;
+    }
+
+    .president-meta span {
+      font-weight: 700;
+      color: #333;
+    }
 
     .president-message {
       font-size: 18px;
       color: #444;
       line-height: 1.9;
-      padding-top: 16px;
+      padding-top: 0;
     }
 
     /* ─── [E] 例会情報 ─── */
@@ -273,11 +293,17 @@
       letter-spacing: 0.08em;
     }
 
+    /* ライトグレー背景に白カードを浮かせる（三上さんフィードバック反映） */
+    .section-members {
+      background: #EFEFEF !important;
+    }
+
     .members-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1px;
-      background: #D8D8D8;
+      gap: 16px;
+      background: transparent;
+      padding: 20px 50px 50px;
     }
 
     .member-card {
@@ -287,6 +313,8 @@
       padding: 16px 18px;
       background: #fff;
       min-height: 116px;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
 
     .member-photo {
@@ -417,16 +445,15 @@
         <div class="president-card">
           <img src="assets/members/itotomomi.jpg" alt="第5期プレジデント 伊藤 友美" class="president-photo">
           <div class="president-info">
-            <dl>
-              <dt>役職</dt>
-              <dd>第5期プレジデント</dd>
-              <dt>氏名</dt>
-              <dd>伊藤 友美</dd>
-              <dt>カテゴリー</dt>
-              <dd>がん予防対策アドバイザー</dd>
-              <dt>ひとこと</dt>
-              <dd>「飛躍をテーマに、初心に帰り真の文化を作っていきます」</dd>
-            </dl>
+            <!-- 上段：名前（大）+ 役職（小） -->
+            <p class="president-name">伊藤 友美</p>
+            <p class="president-role">第5期プレジデント</p>
+            <hr class="president-divider">
+            <!-- 下段：カテゴリー・ひとこと -->
+            <p class="president-meta">
+              <span>カテゴリー：</span>がん予防対策アドバイザー<br>
+              <span>一言：</span>「飛躍をテーマに、初心に帰り真の文化を作っていきます」
+            </p>
             <p class="president-message">
               第5期のテーマは「<span class="text-red">飛躍</span>」。真チャプター立ち上がり2年が経ち、メンバーが初心に帰り真の文化を作ることで
               「<span class="text-red">本気でビジネスを応援する</span>」姿勢を掲げています。
