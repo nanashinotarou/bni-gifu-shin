@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>BNI岐阜 真チャプター｜サイト実装引継ぎ資料</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red:  #CC0000;
+      --dark: #111111;
+      --gold: #C9A84C;
+      --gray: #1e1e1e;
+      --light:#f5f5f5;
+      --white:#ffffff;
+    }
+
+    html, body { width: 100%; height: 100%; overflow: hidden; background: var(--dark); font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', sans-serif; }
+
+    /* ===== スライドコンテナ ===== */
+    .deck { width: 100%; height: 100vh; display: flex; transition: transform 0.45s cubic-bezier(.4,0,.2,1); will-change: transform; }
+    .slide { min-width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 48px 60px; position: relative; overflow: hidden; }
+
+    /* ===== ナビゲーション ===== */
+    .nav { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); display: flex; gap: 16px; z-index: 100; align-items: center; }
+    .nav button { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: #fff; padding: 10px 28px; font-size: 15px; cursor: pointer; border-radius: 4px; transition: background .2s; }
+    .nav button:hover { background: rgba(255,255,255,0.3); }
+    .nav .counter { color: rgba(255,255,255,0.5); font-size: 13px; min-width: 60px; text-align: center; }
+
+    /* ===== 共通テキスト ===== */
+    .label { font-size: 14px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+    .title { font-size: 44px; font-weight: 900; color: var(--white); line-height: 1.2; margin-bottom: 16px; }
+    .title span { color: var(--red); }
+    .title .gold { color: var(--gold); }
+    .sub { font-size: 19px; color: rgba(255,255,255,0.8); line-height: 1.8; }
+    .badge { display: inline-block; background: var(--red); color: #fff; font-size: 14px; font-weight: bold; padding: 3px 10px; border-radius: 3px; margin-left: 6px; vertical-align: middle; }
+    .badge-gold { background: var(--gold); color: #111; }
+    .badge-ok { background: #2e7d32; }
+
+    /* ===== スライド1：表紙 ===== */
+    #s1 { background: var(--dark); }
+    #s1::before { content:''; position:absolute; top:0; right:0; width:45%; height:100%; background: linear-gradient(135deg, var(--red) 0%, #7a0000 100%); clip-path: polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%); opacity:.85; }
+    #s1 .inner { position:relative; z-index:1; width:100%; }
+    #s1 .bni-tag { font-size: 11px; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-bottom: 24px; }
+    #s1 h1 { font-size: 52px; font-weight: 900; color: #fff; line-height: 1.15; margin-bottom: 18px; }
+    #s1 h1 em { color: var(--gold); font-style: normal; }
+    #s1 .meta { font-size: 14px; color: rgba(255,255,255,.5); margin-top: 32px; border-top: 1px solid rgba(255,255,255,.15); padding-top: 20px; display:flex; gap:40px; }
+    #s1 .meta span strong { color: rgba(255,255,255,.85); display:block; font-size:16px; }
+
+    /* ===== スライド2：アジェンダ ===== */
+    #s2 { background: #0d0d0d; }
+    .agenda-list { list-style: none; width: 100%; max-width: 700px; margin-top: 28px; }
+    .agenda-list li { display: flex; align-items: center; gap: 20px; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,.12); font-size: 21px; color: rgba(255,255,255,.9); }
+    .agenda-list li:last-child { border-bottom: none; }
+    .agenda-num { width: 40px; height: 40px; background: var(--red); border-radius: 50%; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:17px; color:#fff; flex-shrink:0; }
+
+    /* ===== スライド3：現況 ===== */
+    #s3 { background: #0a0a0a; }
+    .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width:100%; max-width:800px; margin-top:28px; }
+    .status-card { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); border-radius: 6px; padding: 20px 24px; }
+    .status-card .s-label { font-size: 13px; letter-spacing:2px; color: var(--gold); text-transform:uppercase; margin-bottom:8px; }
+    .status-card .s-val { font-size: 18px; color: #fff; font-weight: bold; }
+    .status-card .s-val.ok::before { content: '✅ '; }
+    .status-card .s-val.alert::before { content: '⚠️ '; }
+    .limit-box { margin-top: 28px; background: rgba(204,0,0,.15); border: 2px solid var(--red); border-radius: 6px; padding: 18px 28px; text-align:center; }
+    .limit-box .lbl { font-size:12px; letter-spacing:2px; color:var(--red); text-transform:uppercase; }
+    .limit-box .date { font-size:36px; font-weight:900; color:#fff; margin-top:4px; }
+    .limit-box .sub { font-size:13px; color:rgba(255,255,255,.5); margin-top:4px; }
+
+    /* ===== スライド4：デザイン方向性 ===== */
+    #s4 { background: #0a0a0a; }
+    .design-ref { display:flex; gap:40px; align-items:center; width:100%; max-width:900px; margin-top:28px; }
+    .chirashi-placeholder { width:300px; min-height:380px; background: linear-gradient(160deg,#1a0000 0%,#2a0000 40%,#111 100%); border: 2px solid var(--red); border-radius: 6px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; flex-shrink:0; color:rgba(255,255,255,.4); font-size:13px; text-align:center; padding:24px; position:relative; }
+    .chirashi-placeholder::before { content:'BNi'; font-size:32px; font-weight:900; color:var(--red); }
+    .chirashi-placeholder .note { font-size:11px; color:rgba(255,255,255,.3); margin-top:8px; }
+    .design-desc { flex:1; }
+    .design-desc h3 { font-size:26px; color: var(--gold); font-weight:bold; margin-bottom:16px; }
+    .design-desc p { font-size:18px; color:rgba(255,255,255,.85); line-height:1.9; margin-bottom:14px; }
+    .keyword-tags { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
+    .keyword-tags span { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.25); color:rgba(255,255,255,.9); padding:8px 16px; border-radius:4px; font-size:17px; }
+
+    /* ===== スライド5：カラーパレット ===== */
+    #s5 { background: #0d0d0d; }
+    .palette { display:flex; gap:24px; margin-top:32px; }
+    .color-card { flex:1; border-radius:8px; overflow:hidden; }
+    .color-swatch { height:160px; }
+    .color-info { padding:18px; background:rgba(255,255,255,.04); }
+    .color-info .c-name { font-size:20px; font-weight:900; color:#fff; margin-bottom:6px; }
+    .color-info .c-hex { font-size:16px; color:rgba(255,255,255,.65); font-family:monospace; margin-bottom:10px; }
+    .color-info .c-desc { font-size:16px; color:rgba(255,255,255,.8); line-height:1.7; }
+
+    /* ===== スライド6：サイト構成 ===== */
+    #s6 { background: #0a0a0a; }
+    .page-flow { display:flex; align-items:center; gap:0; margin-top:32px; width:100%; max-width:860px; }
+    .page-box { flex:1; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); border-radius:6px; padding:20px; text-align:center; }
+    .page-box .p-url { font-size:14px; color:var(--gold); font-family:monospace; margin-bottom:10px; }
+    .page-box .p-name { font-size:20px; font-weight:bold; color:#fff; margin-bottom:10px; }
+    .page-box .p-items { font-size:15px; color:rgba(255,255,255,.75); line-height:2.0; text-align:left; }
+    .page-arrow { font-size:28px; color:rgba(255,255,255,.35); padding:0 10px; flex-shrink:0; }
+    .top-box { border-color: var(--red); }
+    .note-row { margin-top:20px; font-size:15px; color:rgba(255,255,255,.55); text-align:center; }
+
+    /* ===== スライド7：実装シナリオ ===== */
+    #s7 { background: #0a0a0a; }
+    .steps { width:100%; max-width:820px; margin-top:24px; display:flex; flex-direction:column; gap:0; }
+    .step { display:flex; gap:20px; align-items:flex-start; padding:16px 0; border-bottom:1px solid rgba(255,255,255,.06); }
+    .step:last-child { border-bottom:none; }
+    .step-num { width:40px; height:40px; background:var(--red); border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:16px; color:#fff; flex-shrink:0; margin-top:2px; }
+    .step-body { flex:1; }
+    .step-title { font-size:20px; font-weight:bold; color:#fff; margin-bottom:6px; }
+    .step-detail { font-size:16px; color:rgba(255,255,255,.75); line-height:1.8; }
+    .step-tag { display:inline-block; font-size:13px; background:rgba(201,168,76,.2); border:1px solid var(--gold); color:var(--gold); padding:3px 10px; border-radius:3px; margin-top:8px; }
+
+    /* ===== スライド8：引継ぎ ===== */
+    #s8 { background: #0a0a0a; }
+    .handover-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; width:100%; max-width:820px; margin-top:24px; }
+    .h-card { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:6px; padding:20px 24px; }
+    .h-card h3 { font-size:16px; color:var(--gold); letter-spacing:1px; text-transform:uppercase; margin-bottom:14px; border-bottom:1px solid rgba(255,255,255,.12); padding-bottom:10px; }
+    .h-card .item { font-size:16px; color:rgba(255,255,255,.85); padding:6px 0; display:flex; gap:10px; }
+    .h-card .item::before { content:'·'; color:var(--red); font-size:20px; line-height:1.2; flex-shrink:0; }
+    .h-card code { background:rgba(255,255,255,.1); padding:3px 8px; border-radius:3px; font-family:monospace; font-size:14px; color:rgba(255,255,255,.9); }
+
+    /* ===== スライド9：受領待ち ===== */
+    #s9 { background: #0a0a0a; }
+    .pending-list { width:100%; max-width:700px; margin-top:24px; }
+    .pending-item { display:flex; align-items:center; gap:16px; padding:13px 0; border-bottom:1px solid rgba(255,255,255,.06); }
+    .pending-item:last-child { border-bottom:none; }
+    .p-icon { font-size:26px; flex-shrink:0; }
+    .p-title { font-size:20px; color:#fff; font-weight:bold; }
+    .p-note { font-size:16px; color:rgba(255,255,255,.65); margin-top:4px; }
+
+    /* ===== スライド10：スケジュール ===== */
+    #s10 { background: #0a0a0a; }
+    .timeline { width:100%; max-width:700px; margin-top:28px; position:relative; }
+    .timeline::before { content:''; position:absolute; left:20px; top:0; bottom:0; width:2px; background:rgba(255,255,255,.1); }
+    .tl-item { display:flex; gap:24px; align-items:flex-start; padding:12px 0; position:relative; }
+    .tl-dot { width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:bold; flex-shrink:0; position:relative; z-index:1; }
+    .tl-dot.done { background:var(--gold); color:#111; }
+    .tl-dot.now  { background:var(--red);  color:#fff; box-shadow:0 0 0 4px rgba(204,0,0,.3); }
+    .tl-dot.next { background:rgba(255,255,255,.1); color:rgba(255,255,255,.5); border:2px solid rgba(255,255,255,.2); }
+    .tl-body .tl-date { font-size:15px; color:rgba(255,255,255,.6); margin-bottom:4px; }
+    .tl-body .tl-label { font-size:20px; color:#fff; font-weight:bold; }
+    .tl-body .tl-sub { font-size:16px; color:rgba(255,255,255,.7); margin-top:4px; }
+    .tl-item.limit .tl-label { color:var(--red); }
+  </style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- ===== SLIDE 1: 表紙 ===== -->
+  <div class="slide" id="s1">
+    <div class="inner">
+      <div class="bni-tag">BNI Gifu SHIN Chapter — Site Renewal 2026</div>
+      <h1>サイト実装<br><em>引継ぎ資料</em></h1>
+      <p style="font-size:16px; color:rgba(255,255,255,.55); margin-top:12px;">水戸唯人さん（コーディング担当）へ</p>
+      <div class="meta">
+        <span><strong>作成</strong> 金子浩也</span>
+        <span><strong>日付</strong> 2026年6月1日</span>
+        <span><strong>絶対リミット</strong> 2026年6月24日（6/24 BizOpenDay）</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 2: アジェンダ ===== -->
+  <div class="slide" id="s2">
+    <div class="label">Agenda</div>
+    <div class="title">本日お伝えすること</div>
+    <ul class="agenda-list">
+      <li><span class="agenda-num">1</span>プロジェクト現況と環境</li>
+      <li><span class="agenda-num">2</span>デザイン方向性 ← チラシに準拠</li>
+      <li><span class="agenda-num">3</span>カラーパレット・雰囲気の解説</li>
+      <li><span class="agenda-num">4</span>サイト構成（3ページ）</li>
+      <li><span class="agenda-num">5</span>実装シナリオ（やること順番）</li>
+      <li><span class="agenda-num">6</span>引継ぎ事項・受領待ちデータ</li>
+    </ul>
+  </div>
+
+  <!-- ===== SLIDE 3: 現況 ===== -->
+  <div class="slide" id="s3">
+    <div class="label">Current Status</div>
+    <div class="title">プロジェクト現況</div>
+    <div class="status-grid">
+      <div class="status-card">
+        <div class="s-label">Server</div>
+        <div class="s-val ok">さくらインターネット スタンダード 稼働中</div>
+      </div>
+      <div class="status-card">
+        <div class="s-label">Domain</div>
+        <div class="s-val ok">shin-bni.jp（独自SSL取得済み）</div>
+      </div>
+      <div class="status-card">
+        <div class="s-label">WordPress</div>
+        <div class="s-val ok">v7.0 インストール済み（2026/06/01）</div>
+      </div>
+      <div class="status-card">
+        <div class="s-label">チラシ URL</div>
+        <div class="s-val ok">chirashi.shin-bni.jp に退避済み</div>
+      </div>
+      <div class="status-card">
+        <div class="s-label">ワイヤーフレーム</div>
+        <div class="s-val ok">第3回フィードバック対応済み</div>
+      </div>
+      <div class="status-card">
+        <div class="s-label">デザイン方向性</div>
+        <div class="s-val ok">チラシ準拠で確定</div>
+      </div>
+    </div>
+    <div class="limit-box" style="width:100%;max-width:800px;">
+      <div class="lbl">絶対リミット</div>
+      <div class="date">2026年6月24日（水）</div>
+      <div class="sub">BNI ビジネスオポチュニティー当日 — この日までに公開完了</div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 4: デザイン方向性 ===== -->
+  <div class="slide" id="s4">
+    <div class="label">Design Direction</div>
+    <div class="title">デザイン方向性<br><span style="font-size:24px;color:rgba(255,255,255,.5);">— クライアント提供チラシに準拠 —</span></div>
+    <div class="design-ref">
+      <div class="chirashi-placeholder">
+        <div style="font-size:11px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;">Client Provided</div>
+        <div style="font-size:14px;color:rgba(255,255,255,.6);text-align:center;line-height:1.8;">
+          BUSINESS OPEN DAY<br>
+          <span style="color:var(--gold);font-weight:bold;">"飛躍"する出会いを。</span><br>
+          <span style="font-size:11px;">チラシ現物を参照</span>
+        </div>
+        <div class="note">↑ クライアントより提供<br>このデザインに準拠する</div>
+      </div>
+      <div class="design-desc">
+        <h3>このチラシが「デザインの答え」</h3>
+        <p>クライアントがすでにブランドイメージを確立しています。<br>
+        Webサイトもこのチラシと同じトーン・同じ世界観で統一します。</p>
+        <p>ゼロからデザインを考える必要はありません。<br>
+        <strong style="color:#fff;">チラシを見ながらコーディングすればOK。</strong></p>
+        <div class="keyword-tags">
+          <span>高級感</span>
+          <span>信頼感</span>
+          <span>本格感</span>
+          <span>プロフェッショナル</span>
+          <span>経営者向け</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 5: カラーパレット ===== -->
+  <div class="slide" id="s5">
+    <div class="label">Color Palette</div>
+    <div class="title">チラシから抽出した<br><span class="gold">3色のカラーパレット</span></div>
+    <div class="palette" style="width:100%;max-width:800px;">
+      <div class="color-card">
+        <div class="color-swatch" style="background:#CC0000;"></div>
+        <div class="color-info">
+          <div class="c-name">BNI レッド</div>
+          <div class="c-hex">#CC0000</div>
+          <div class="c-desc">BNI公式カラー。情熱・行動力・ブランド認識。メインカラー・ボタン・強調に使用</div>
+        </div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#111111;"></div>
+        <div class="color-info">
+          <div class="c-name">プレミアム ブラック</div>
+          <div class="c-hex">#111111</div>
+          <div class="c-desc">本格・高級・重厚感。セクション背景・ヘッダー背景に使用。黒があることで赤と金が映える</div>
+        </div>
+      </div>
+      <div class="color-card">
+        <div class="color-swatch" style="background:#C9A84C;"></div>
+        <div class="color-info">
+          <div class="c-name">アクセント ゴールド</div>
+          <div class="c-hex">#C9A84C</div>
+          <div class="c-desc">上質・信頼・特別感。見出し装飾・強調テキストに使用。使いすぎず要所に</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 6: サイト構成 ===== -->
+  <div class="slide" id="s6">
+    <div class="label">Site Structure</div>
+    <div class="title">サイト構成 — <span style="font-size:28px;color:rgba(255,255,255,.5);">3ページ</span></div>
+    <div class="page-flow">
+      <div class="page-box top-box">
+        <div class="p-url">shin-bni.jp/</div>
+        <div class="p-name">🏠 トップページ</div>
+        <div class="p-items">
+          ヒーロー<br>
+          BNIとは（動画）<br>
+          参加のメリット<br>
+          定例会について<br>
+          当日の流れ<br>
+          メンバー紹介（全員）<br>
+          CTA
+        </div>
+      </div>
+      <div class="page-arrow">→</div>
+      <div class="page-box">
+        <div class="p-url">shin-bni.jp/faq/</div>
+        <div class="p-name">❓ よくある質問</div>
+        <div class="p-items">
+          カテゴリ別<br>
+          アコーディオン表示
+        </div>
+      </div>
+      <div class="page-arrow">→</div>
+      <div class="page-box">
+        <div class="p-url">shin-bni.jp/contact/</div>
+        <div class="p-name">✉️ お問い合わせ</div>
+        <div class="p-items">
+          Contact Form 7<br>
+          見学申し込み<br>
+          入会の流れ
+        </div>
+      </div>
+    </div>
+    <div class="note-row">
+      ※ ナビメニューは「BNIとは・参加のメリット・定例会について」はトップ内アンカーリンク。「よくある質問・お問い合わせ」のみ別ページ遷移。メンバー紹介はトップに統合済み（独立ページなし）。
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 7: 実装シナリオ ===== -->
+  <div class="slide" id="s7">
+    <div class="label">Implementation Scenario</div>
+    <div class="title">実装シナリオ<br><span style="font-size:22px;color:rgba(255,255,255,.4);">— この順番で進める —</span></div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">カスタムテーマ作成（bni-shin）</div>
+          <div class="step-detail">WP管理画面からテーマフォルダ作成。front-page.php / page-faq.php / page-contact.php / header.php / footer.php を用意</div>
+          <span class="step-tag">ワイヤーフレーム3ファイル参照</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">トップページ実装（LP型・フルコンテンツ）</div>
+          <div class="step-detail">wireframe_top.html をそのままコーディング。メンバーカードはWPカスタム投稿タイプから動的出力に変換</div>
+          <span class="step-tag">ACF（Advanced Custom Fields）使用</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">メンバー管理機能実装</div>
+          <div class="step-detail">カスタム投稿タイプ「member」登録。フィールド：氏名・カテゴリー・コメント・顔写真・名刺JPG（表・裏）。名刺ポップアップはワイヤーフレームのサンプルコードを流用可</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">FAQ・お問い合わせページ実装</div>
+          <div class="step-detail">Contact Form 7 + Conditional Fields プラグインでフォーム構築。「業種：その他」→自由記述、「見学を希望」→希望見学日を条件表示</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <div class="step-title">レスポンシブ対応・最終確認</div>
+          <div class="step-detail">PC（960px+）・タブレット（560〜960px）・スマホ（〜560px）の3段階対応。金子によるチェック後に本番公開</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 8: 引継ぎ ===== -->
+  <div class="slide" id="s8">
+    <div class="label">Handover Info</div>
+    <div class="title">水戸さんへの引継ぎ事項</div>
+    <div class="handover-grid">
+      <div class="h-card">
+        <h3>WP 接続情報</h3>
+        <div class="item">管理画面：<code>shin-bni.jp/wp-admin/</code></div>
+        <div class="item">ユーザー名・PW：<code>※ Stock にて共有済み</code></div>
+        <div class="item">WP バージョン：7.0（最新）</div>
+      </div>
+      <div class="h-card">
+        <h3>必須プラグイン</h3>
+        <div class="item">Advanced Custom Fields（ACF）無料版</div>
+        <div class="item">Contact Form 7</div>
+        <div class="item">Conditional Fields for CF7</div>
+        <div class="item">WP Mail SMTP</div>
+      </div>
+      <div class="h-card">
+        <h3>参照ファイル</h3>
+        <div class="item"><code>wireframe_top.html</code></div>
+        <div class="item"><code>wireframe_faq.html</code></div>
+        <div class="item"><code>wireframe_contact.html</code></div>
+        <div class="item"><code>wordpress_spec.html</code>（本仕様書）</div>
+      </div>
+      <div class="h-card">
+        <h3>デザイン指定</h3>
+        <div class="item">チラシ（別途共有）に準拠</div>
+        <div class="item">赤 <code>#CC0000</code> / 黒 <code>#111</code> / 金 <code>#C9A84C</code></div>
+        <div class="item">フォント：Montserrat（英）+ Noto Sans JP（日）</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 9: 受領待ち ===== -->
+  <div class="slide" id="s9">
+    <div class="label">Pending Data</div>
+    <div class="title">受領待ちデータ一覧<br><span style="font-size:20px;color:rgba(255,255,255,.4);">確定次第・金子より連絡</span></div>
+    <div class="pending-list">
+      <div class="pending-item">
+        <div class="p-icon">📷</div>
+        <div>
+          <div class="p-title">全メンバーの名刺JPG（表・裏）</div>
+          <div class="p-note">受領後に差し替え。それまでプレースホルダーで実装しておく</div>
+        </div>
+      </div>
+      <div class="pending-item">
+        <div class="p-icon">💬</div>
+        <div>
+          <div class="p-title">清水紀秀さんのひとことコメント</div>
+          <div class="p-note">「（ひとことコメント）」で仮置き</div>
+        </div>
+      </div>
+      <div class="pending-item">
+        <div class="p-icon">👤</div>
+        <div>
+          <div class="p-title">大久保翔さんの顔写真</div>
+          <div class="p-note">ビジネスサポートカテゴリーに掲載済み。写真のみ未受領</div>
+        </div>
+      </div>
+      <div class="pending-item">
+        <div class="p-icon">👥</div>
+        <div>
+          <div class="p-title">追加予定2名のメンバー情報</div>
+          <div class="p-note">氏名・写真・カテゴリー・コメント。決まり次第連絡あり</div>
+        </div>
+      </div>
+      <div class="pending-item">
+        <div class="p-icon">🎬</div>
+        <div>
+          <div class="p-title">BNI紹介動画のYouTube URL</div>
+          <div class="p-note">トップページの動画エリア。プレースホルダーで実装しておく</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 10: Claude Code ===== -->
+  <div class="slide" id="s10">
+    <div class="label">Tool Recommendation</div>
+    <div class="title">実装ツール：<span class="gold">Claude Code</span><br><span style="font-size:22px;color:rgba(255,255,255,.5);">— 積極的に使ってください —</span></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;width:100%;max-width:900px;margin-top:24px;">
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:24px;">
+        <div style="font-size:16px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;">Claude Codeとは</div>
+        <div style="font-size:17px;color:rgba(255,255,255,.85);line-height:1.9;">
+          ターミナルで動くAIコーディングアシスタント。<br>
+          ファイル読み書き・コード生成・バグ修正を<br>
+          会話しながら進められる。<br><br>
+          <strong style="color:#fff;">このプロジェクトの設計資料はすでにClaude Codeで作成済み。</strong>相性が良い。
+        </div>
+      </div>
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:24px;">
+        <div style="font-size:16px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;">使い方イメージ</div>
+        <div style="font-size:16px;color:rgba(255,255,255,.85);line-height:2.0;">
+          <span style="color:var(--gold);">▶</span> 「wireframe_top.htmlを参照してfront-page.phpを作って」<br>
+          <span style="color:var(--gold);">▶</span> 「member投稿タイプをfunctions.phpに追加して」<br>
+          <span style="color:var(--gold);">▶</span> 「このCSSをBNIのカラーパレットに合わせて修正して」<br>
+          <span style="color:var(--gold);">▶</span> 「CF7のフォームコードを書いて」
+        </div>
+      </div>
+      <div style="background:rgba(201,168,76,.08);border:1px solid var(--gold);border-radius:8px;padding:24px;">
+        <div style="font-size:16px;color:var(--gold);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;">渡すべき情報</div>
+        <div style="font-size:16px;color:rgba(255,255,255,.85);line-height:2.0;">
+          <span style="color:#fff;">①</span> wordpress_spec.html（本仕様書）<br>
+          <span style="color:#fff;">②</span> wireframe 3ファイル<br>
+          <span style="color:#fff;">③</span> チラシ画像（デザイン参照用）<br>
+          → これらを読み込ませればOK
+        </div>
+      </div>
+      <div style="background:rgba(204,0,0,.08);border:1px solid rgba(204,0,0,.4);border-radius:8px;padding:24px;">
+        <div style="font-size:16px;color:var(--red);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;">注意点</div>
+        <div style="font-size:16px;color:rgba(255,255,255,.85);line-height:2.0;">
+          AIが生成したコードは<strong style="color:#fff;">必ず動作確認</strong>する。<br>
+          WP特有の挙動（パーマリンク・フック等）は<br>
+          AIが間違えることもある。<br>
+          疑問点は金子に確認してください。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SLIDE 11: スケジュール ===== -->
+  <div class="slide" id="s11">
+    <div class="label">Schedule</div>
+    <div class="title">スケジュール感</div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot done">完了</div>
+        <div class="tl-body">
+          <div class="tl-date">〜2026年6月1日</div>
+          <div class="tl-label">WPインストール・環境構築完了</div>
+          <div class="tl-sub">サーバー・ドメイン・WP・チラシURL退避すべて完了</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot now">NOW</div>
+        <div class="tl-body">
+          <div class="tl-date">2026年6月1日〜</div>
+          <div class="tl-label">コーディング開始</div>
+          <div class="tl-sub">本引継ぎ資料をもとに水戸さんが実装スタート</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot next">確認</div>
+        <div class="tl-body">
+          <div class="tl-date">6月中旬（目安）</div>
+          <div class="tl-label">金子によるコーディングチェック</div>
+          <div class="tl-sub">修正対応後に本番公開</div>
+        </div>
+      </div>
+      <div class="tl-item limit">
+        <div class="tl-dot now" style="background:var(--red);">🔥</div>
+        <div class="tl-body">
+          <div class="tl-date" style="color:var(--red);">2026年6月24日（水）</div>
+          <div class="tl-label">絶対リミット — BNI ビジネスオポチュニティー当日</div>
+          <div class="tl-sub">この日に公開済みのサイトを来訪者に見てもらう。絶対に間に合わせる。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /deck -->
+
+<!-- ナビゲーション -->
+<div class="nav">
+  <button onclick="prev()">← 前へ</button>
+  <span class="counter" id="counter">1 / 10</span>
+  <button onclick="next()">次へ →</button>
+</div>
+
+<script>
+  var total = 11;
+  var current = 0;
+  var deckEl = document.getElementById('deck');
+  var counterEl = document.getElementById('counter');
+
+  function goTo(n) {
+    current = Math.max(0, Math.min(total - 1, n));
+    deckEl.style.transform = 'translateX(-' + (current * window.innerWidth) + 'px)';
+    counterEl.textContent = (current + 1) + ' / ' + total;
+  }
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  // キーボード対応
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next();
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   prev();
+  });
+
+  // スワイプ対応（ブラウザの前後移動を上書きしてスライド内でのみ動作させる）
+  var touchStartX = 0;
+  var touchStartY = 0;
+  var swipeHandled = false;
+  document.addEventListener('touchstart', function(e) {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    swipeHandled = false;
+  }, { passive: true });
+  document.addEventListener('touchmove', function(e) {
+    if (swipeHandled) return;
+    var dx = e.touches[0].clientX - touchStartX;
+    var dy = e.touches[0].clientY - touchStartY;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10) {
+      e.preventDefault(); // ブラウザの横スワイプ（前後移動）をキャンセル
+    }
+  }, { passive: false });
+  document.addEventListener('touchend', function(e) {
+    if (swipeHandled) return;
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    var dy = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+      swipeHandled = true;
+      if (dx < 0) next(); else prev();
+    }
+  });
+</script>
+</body>
+</html>
